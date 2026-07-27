@@ -1,10 +1,57 @@
 @import url('https://fonts.googleapis.com/css2?family=TASA+Orbiter:wght@400..800&display=swap');
 
+:root {
+  font-family: 'TASA Orbiter', sans-serif;
+  --type-display-size: clamp(1.75rem, 4vw, 3rem);
+  --type-title-size: clamp(1rem, 2vw, 1.5rem);
+  --type-body-size: clamp(0.875rem, 1.25vw, 1rem);
+  --type-label-size: clamp(0.75rem, 1.25vw, 1rem);
+  --type-display-leading: 1.2;
+  --type-title-leading: 1.2;
+  --type-body-leading: 1.4;
+  --type-label-leading: 1.25;
+  --type-display-tracking: -0.02em;
+  --type-body-tracking: 0.01em;
+}
+
 body {
   color: #ffffff;
   background-color: #000000;
-  font-family: 'TASA Orbiter', sans-serif;
+  font-family: inherit;
+  font-size: var(--type-body-size);
   font-weight: 400;
-  line-height: 1.45;
+  line-height: var(--type-body-leading);
   margin: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+h1,
+h2,
+h3,
+p {
+  font-weight: 400;
+}
+
+h1,
+h2 {
+  font-size: var(--type-display-size);
+  line-height: var(--type-display-leading);
+  letter-spacing: var(--type-display-tracking);
+}
+
+h3 {
+  font-size: var(--type-title-size);
+  line-height: var(--type-title-leading);
+}
+
+p {
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-leading);
+  letter-spacing: var(--type-body-tracking);
 }

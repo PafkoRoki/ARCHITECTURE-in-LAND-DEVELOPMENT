@@ -2,6 +2,7 @@ import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { ExpoScaleEase } from 'gsap/EasePack'
 import { Flip } from 'gsap/Flip'
 import { gsap } from 'gsap'
+import { ScrollSmoother } from 'gsap/ScrollSmoother'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 import architectsImage from '../assets/architects.jpg'
@@ -329,14 +330,22 @@ function WhyWorkWithUs() {
     const target =
       timelineScrollTrigger.start +
       (timelineScrollTrigger.end - timelineScrollTrigger.start) * progress
+    const smoother = ScrollSmoother.get()
 
     scrollTweenRef.current?.kill()
-    scrollTweenRef.current = gsap.to(window, {
-      scrollTo: target,
-      duration: 1,
-      ease: 'power2.inOut',
-      overwrite: 'auto',
-    })
+    scrollTweenRef.current = smoother
+      ? gsap.to(smoother, {
+          scrollTop: target,
+          duration: 1,
+          ease: 'power2.inOut',
+          overwrite: 'auto',
+        })
+      : gsap.to(window, {
+          scrollTo: target,
+          duration: 1,
+          ease: 'power2.inOut',
+          overwrite: 'auto',
+        })
   }
 
   return (

@@ -87,12 +87,17 @@
 }
 
 .gallery-copy h2 {
-  color: rgb(59, 130, 246);
+  color: #ff8709;
+  font-size: var(--type-display-size);
+  line-height: var(--type-display-leading);
+  letter-spacing: var(--type-display-tracking);
 }
 
 .gallery-copy p {
   margin-bottom: 1rem;
-  font-size: 1.2rem;
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-leading);
+  letter-spacing: var(--type-body-tracking);
 }
 
 .why-work-with-us,
@@ -136,11 +141,11 @@
 .why-work-with-us__heading {
   flex: none;
   margin: 0;
-  color: rgb(59, 130, 246);
-  font-size: 3rem;
+  color: #ff8709;
+  font-size: var(--type-display-size);
   font-weight: 400;
-  line-height: 1.2;
-  letter-spacing: -0.03125rem;
+  line-height: var(--type-display-leading);
+  letter-spacing: var(--type-display-tracking);
 }
 
 .why-work-with-us__list-wrapper {
@@ -210,9 +215,9 @@
   flex: none;
   padding: 0.875rem;
   border: 1px solid #2b2b2b;
-  font-size: 1rem;
+  font-size: var(--type-label-size);
   font-weight: 400;
-  line-height: 1.25;
+  line-height: var(--type-label-leading);
 }
 
 .why-work-with-us__number-text {
@@ -231,10 +236,10 @@
   flex: 1;
   min-width: 0;
   margin: 0;
-  color: rgb(59, 130, 246);
-  font-size: 1.5rem;
+  color: #ff8709;
+  font-size: var(--type-title-size);
   font-weight: 400;
-  line-height: 1.2;
+  line-height: var(--type-title-leading);
 }
 
 .why-work-with-us__body {
@@ -242,9 +247,9 @@
   padding-left: 4.5rem;
   overflow: hidden;
   color: #b3b3b3;
-  font-size: 1rem;
-  line-height: 1.4;
-  letter-spacing: 0.009375rem;
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-leading);
+  letter-spacing: var(--type-body-tracking);
 }
 
 .why-work-with-us__description {
@@ -302,10 +307,6 @@
 }
 
 @media (max-width: 767px) {
-  .why-work-with-us__heading {
-    font-size: 2.25rem;
-  }
-
   .why-work-with-us__images {
     display: none;
   }
@@ -325,10 +326,6 @@
     height: auto;
   }
 
-  .why-work-with-us__heading {
-    font-size: 1.75rem;
-  }
-
   .why-work-with-us__list-wrapper {
     height: auto;
     overflow: visible;
@@ -340,16 +337,10 @@
 
   .why-work-with-us__number {
     padding: 0.75rem;
-    font-size: 0.75rem;
-  }
-
-  .why-work-with-us__title {
-    font-size: 1rem;
   }
 
   .why-work-with-us__body {
     padding-left: 3.375rem;
-    font-size: 0.875rem;
   }
 }
 

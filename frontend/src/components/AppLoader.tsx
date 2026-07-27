@@ -125,8 +125,8 @@ function AppLoaderAnimation({ onComplete }: AppLoaderAnimationProps) {
           x2="0%"
           y2="100%"
         >
-          <stop offset="0%" stopColor="#000000" />
-          <stop offset="100%" stopColor="rgb(59, 130, 246)" />
+          <stop offset="0%" stopColor="#ff8709" />
+          <stop offset="100%" stopColor="#ffa500" />
         </linearGradient>
         <linearGradient
           id={gradient2Id}
@@ -135,8 +135,8 @@ function AppLoaderAnimation({ onComplete }: AppLoaderAnimationProps) {
           x2="0%"
           y2="100%"
         >
-          <stop offset="0%" stopColor="rgb(59, 130, 246)" />
-          <stop offset="100%" stopColor="#000000" />
+          <stop offset="0%" stopColor="#ffd9b0" />
+          <stop offset="100%" stopColor="#ff8709" />
         </linearGradient>
       </defs>
       <path
