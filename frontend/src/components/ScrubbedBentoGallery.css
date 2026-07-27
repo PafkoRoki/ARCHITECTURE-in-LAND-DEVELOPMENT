@@ -1,3 +1,8 @@
+.gallery-wrap,
+.why-work-with-us {
+  --card-radius: clamp(16px, 2vw, 28px);
+}
+
 .gallery-wrap {
   position: relative;
   width: 100%;
@@ -17,7 +22,6 @@
     100vw - var(--gallery-edge-inset) - var(--gallery-edge-inset)
   );
   --gallery-gap: var(--gallery-edge-inset);
-  --gallery-radius: clamp(16px, 2vw, 28px);
 
   position: relative;
   width: 100%;
@@ -30,7 +34,7 @@
 .gallery__item {
   background-position: 50% 50%;
   background-size: cover;
-  border-radius: var(--gallery-radius);
+  border-radius: var(--card-radius);
   flex: none;
   overflow: hidden;
   position: relative;
@@ -290,6 +294,7 @@
   position: relative;
   flex: none;
   width: calc(50% - 2px);
+  border-radius: var(--card-radius);
   overflow: hidden;
 }
 
