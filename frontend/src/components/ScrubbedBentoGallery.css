@@ -36,6 +36,7 @@
   background-position: 50% 50%;
   background-size: cover;
   border-radius: var(--card-radius);
+  corner-shape: squircle;
   flex: none;
   overflow: hidden;
   position: relative;
@@ -291,6 +292,7 @@
   flex: 1 1 50%;
   min-width: 0;
   border-radius: var(--card-radius);
+  corner-shape: squircle;
   overflow: hidden;
 }
 
