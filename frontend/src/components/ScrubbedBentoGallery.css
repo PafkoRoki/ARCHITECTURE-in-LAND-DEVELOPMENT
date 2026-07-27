@@ -10,7 +10,13 @@
 
 .gallery {
   --gallery-edge-inset: clamp(12px, 1.5vw, 24px);
-  --gallery-gap: clamp(8px, 1vh, 12px);
+  --gallery-expanded-height: calc(
+    100vh - var(--gallery-edge-inset) - var(--gallery-edge-inset)
+  );
+  --gallery-expanded-width: calc(
+    100vw - var(--gallery-edge-inset) - var(--gallery-edge-inset)
+  );
+  --gallery-gap: clamp(12px, 1.25vw, 20px);
   --gallery-radius: clamp(16px, 2vw, 28px);
 
   position: relative;
@@ -52,10 +58,12 @@
 }
 
 .gallery--final.gallery--bento {
-  grid-template-columns: repeat(3, 100vw);
+  grid-template-columns: repeat(3, var(--gallery-expanded-width));
   grid-template-rows: repeat(
     4,
-    calc((100vh - var(--gallery-gap)) / 2)
+    calc(
+      (var(--gallery-expanded-height) - var(--gallery-gap)) / 2
+    )
   );
   gap: var(--gallery-gap);
 }

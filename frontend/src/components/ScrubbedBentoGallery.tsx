@@ -105,7 +105,11 @@ const [WHY_WORK_WITH_US_HEADING, WHY_WORK_WITH_US_BENEFITS] =
 const WHY_WORK_WITH_US_ANIMATION_QUERY =
   '(min-width: 480px) and (prefers-reduced-motion: no-preference)'
 
-function WhyWorkWithUs() {
+type ScrollReadyProps = Readonly<{
+  isScrollReady: boolean
+}>
+
+function WhyWorkWithUs({ isScrollReady }: ScrollReadyProps) {
   const sectionRef = useRef<HTMLElement>(null)
   const timelineRef = useRef<gsap.core.Timeline>(null)
   const scrollTweenRef = useRef<gsap.core.Tween>(null)
@@ -136,7 +140,7 @@ function WhyWorkWithUs() {
   useLayoutEffect(() => {
     const section = sectionRef.current
 
-    if (!section || !isAnimated) return
+    if (!section || !isAnimated || !isScrollReady) return
 
     let animationContext: gsap.Context | undefined
     let refreshTimeout: number | undefined
@@ -320,7 +324,7 @@ function WhyWorkWithUs() {
       timelineRef.current = null
       animationContext?.revert()
     }
-  }, [isAnimated])
+  }, [isAnimated, isScrollReady])
 
   const scrollToBenefit = (index: number) => {
     const timelineScrollTrigger = timelineRef.current?.scrollTrigger
@@ -339,19 +343,19 @@ function WhyWorkWithUs() {
     const smoother = ScrollSmoother.get()
 
     scrollTweenRef.current?.kill()
-    scrollTweenRef.current = null
-
-    if (smoother) {
-      smoother.scrollTo(boundedTarget, true)
-      return
-    }
-
-    scrollTweenRef.current = gsap.to(window, {
-      scrollTo: boundedTarget,
-      duration: 1,
-      ease: 'power2.inOut',
-      overwrite: 'auto',
-    })
+    scrollTweenRef.current = smoother
+      ? gsap.to(smoother, {
+          scrollTop: boundedTarget,
+          duration: 1,
+          ease: 'power2.inOut',
+          overwrite: 'auto',
+        })
+      : gsap.to(window, {
+          scrollTo: boundedTarget,
+          duration: 1,
+          ease: 'power2.inOut',
+          overwrite: 'auto',
+        })
   }
 
   return (
@@ -488,14 +492,14 @@ function WhyWorkWithUs() {
  * https://codepen.io/GreenSock/pen/vYMzKZx
  * Public Pen source used under the MIT license.
  */
-function ScrubbedBentoGallery() {
+function ScrubbedBentoGallery({ isScrollReady }: ScrollReadyProps) {
   const galleryRef = useRef<HTMLDivElement>(null)
 
   useLayoutEffect(() => {
     const gallery = galleryRef.current
     const galleryWrap = gallery?.parentElement
 
-    if (!gallery || !galleryWrap) return
+    if (!gallery || !galleryWrap || !isScrollReady) return
 
     const galleryItems = Array.from(
       gallery.querySelectorAll<HTMLElement>('.gallery__item'),
@@ -550,7 +554,7 @@ function ScrubbedBentoGallery() {
       flipContext?.revert()
       gallery.classList.remove('gallery--final')
     }
-  }, [])
+  }, [isScrollReady])
 
   return (
     <main>
@@ -574,7 +578,7 @@ function ScrubbedBentoGallery() {
         ))}
       </article>
 
-      <WhyWorkWithUs />
+      <WhyWorkWithUs isScrollReady={isScrollReady} />
     </main>
   )
 }
