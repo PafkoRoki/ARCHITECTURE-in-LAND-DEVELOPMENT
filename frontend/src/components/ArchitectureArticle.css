@@ -1,0 +1,19 @@
+.gallery-copy {
+  color: #000000;
+  background-color: #ffffff;
+  padding: 2rem 5rem clamp(6rem, 10vw, 10rem);
+}
+
+.gallery-copy h2 {
+  color: #ff8709;
+  font-size: var(--type-display-size);
+  line-height: var(--type-display-leading);
+  letter-spacing: var(--type-display-tracking);
+}
+
+.gallery-copy p {
+  margin-bottom: 1rem;
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-leading);
+  letter-spacing: var(--type-body-tracking);
+}

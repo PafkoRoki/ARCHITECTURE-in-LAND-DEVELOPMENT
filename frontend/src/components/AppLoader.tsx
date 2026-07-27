@@ -1,5 +1,5 @@
 import { useCallback, useId, useLayoutEffect, useRef, useState } from 'react'
-import { gsap } from 'gsap'
+import { gsap } from '../lib/gsap'
 import './AppLoader.css'
 
 const NUM_POINTS = 10

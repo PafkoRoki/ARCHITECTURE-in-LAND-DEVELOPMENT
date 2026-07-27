@@ -1,75 +1,45 @@
-# React + TypeScript + Vite
+# Architecture in Land Development
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React and TypeScript landing page with GSAP-powered scrolling and section
+transitions. Vite builds the browser application, and a Cloudflare Pages worker
+serves the production output.
 
-Currently, two official plugins are available:
+## Architecture
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- `src/App.tsx` owns the loader and smooth-scroll page shell.
+- `src/components/` contains the gallery, article, benefits, and loader views.
+- `src/hooks/` owns smooth scrolling and section-specific animation lifecycles.
+- `src/content/landingPageContent.ts` is the typed source for page copy, images,
+  and benefit ordering.
+- Section styles live beside their components and are aggregated by the page
+  composer in their original cascade order.
+- `src/lib/gsap.ts` centralizes GSAP plugin registration.
 
-## React Compiler
+## Behavior contracts
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- `ScrubbedBentoGallery` remains the page composer and receives
+  `isScrollReady: boolean`.
+- The loader remains outside the smooth-scroll wrapper and keeps the app inert
+  until its transition finishes.
+- Gallery image order, article copy, benefit order, DOM nesting, CSS class names,
+  breakpoints, and animation timing are intentional and covered by tests.
+- The benefits section is interactive only when its desktop/no-reduced-motion
+  media query matches; otherwise it renders a fully expanded static list.
+- Every animation hook must release timers, listeners, tweens, media-query
+  contexts, and inline styles that it owns.
 
-## Expanding the ESLint configuration
+## Commands
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Run commands from this directory with [Bun](https://bun.sh/):
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```sh
+bun install
+bun run dev
+bun run lint
+bun run test
+bun run build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
+`bun run pages:dev` builds and previews the Cloudflare Pages application.
+Production deployment is performed by `.github/workflows/deploy-frontend.yml`
+after linting, tests, and the production build succeed.
