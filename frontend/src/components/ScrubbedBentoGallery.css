@@ -1,6 +1,7 @@
 .gallery-wrap,
 .why-work-with-us {
   --card-radius: clamp(16px, 2vw, 28px);
+  --card-spacing: clamp(12px, 1.5vw, 24px);
 }
 
 .gallery-wrap {
@@ -14,7 +15,7 @@
 }
 
 .gallery {
-  --gallery-edge-inset: clamp(12px, 1.5vw, 24px);
+  --gallery-edge-inset: var(--card-spacing);
   --gallery-expanded-height: calc(
     100vh - var(--gallery-edge-inset) - var(--gallery-edge-inset)
   );
@@ -131,19 +132,19 @@
   background-color: #ffffff;
   width: 100%;
   height: 300svh;
-  padding-right: 4px;
-  padding-left: 4px;
+  padding-right: var(--card-spacing);
+  padding-left: var(--card-spacing);
 }
 
 .why-work-with-us__wrapper {
   display: flex;
-  gap: 4px;
+  gap: var(--card-spacing);
   width: 100%;
   max-width: 120rem;
   height: 100svh;
   margin: 0 auto;
-  padding-top: 4px;
-  padding-bottom: 4px;
+  padding-top: var(--card-spacing);
+  padding-bottom: var(--card-spacing);
 }
 
 .why-work-with-us__content {
@@ -287,8 +288,8 @@
 
 .why-work-with-us__images {
   position: relative;
-  flex: none;
-  width: calc(50% - 2px);
+  flex: 1 1 50%;
+  min-width: 0;
   border-radius: var(--card-radius);
   overflow: hidden;
 }
