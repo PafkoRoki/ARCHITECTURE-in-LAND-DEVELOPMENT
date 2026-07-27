@@ -2,14 +2,19 @@ import { act, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useSmoothScroll } from './useSmoothScroll'
 
+const ENHANCED_SCROLL_QUERY =
+  '(min-width: 992px) and (min-height: 600px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)'
+const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
+
 type MotionConditions = Readonly<{
+  enhanced: boolean
   reduced: boolean
-  smooth: boolean
 }>
 
 const animationMocks = vi.hoisted(() => ({
   activeCleanup: undefined as undefined | (() => void),
-  conditions: { reduced: false, smooth: true },
+  conditions: { enhanced: true, reduced: false },
+  mediaAdd: vi.fn(),
   mediaCallback: undefined as
     | undefined
     | ((conditions: MotionConditions) => void),
@@ -26,18 +31,20 @@ vi.mock('../lib/gsap', () => ({
   ScrollTrigger: { refresh: animationMocks.refresh },
 }))
 
-function HookHarness() {
+function HookHarness({ enabled }: Readonly<{ enabled: boolean }>) {
   const {
     contentRef,
+    enhancedScrollEnabled,
     isScrollReady,
     prefersReducedMotion,
     wrapperRef,
-  } = useSmoothScroll()
+  } = useSmoothScroll({ enabled })
 
   return (
     <>
       <output
         data-testid="state"
+        data-enhanced={enhancedScrollEnabled}
         data-ready={isScrollReady}
         data-reduced={prefersReducedMotion}
       />
@@ -50,11 +57,13 @@ function HookHarness() {
 
 let initialDocumentStyles = ''
 let initialBodyStyles = ''
+let frameCallbacks: FrameRequestCallback[] = []
 
 beforeEach(() => {
   initialDocumentStyles = document.documentElement.style.cssText
   initialBodyStyles = document.body.style.cssText
-  animationMocks.conditions = { reduced: false, smooth: true }
+  frameCallbacks = []
+  animationMocks.conditions = { enhanced: true, reduced: false }
   animationMocks.activeCleanup = undefined
   animationMocks.mediaCallback = undefined
   animationMocks.smootherCreate.mockReturnValue({
@@ -62,13 +71,15 @@ beforeEach(() => {
   })
   animationMocks.matchMedia.mockImplementation(() => ({
     add: (
-      _queries: unknown,
+      queries: unknown,
       callback: (context: {
         conditions?: MotionConditions
       }) => void | (() => void),
     ) => {
+      animationMocks.mediaAdd(queries)
       animationMocks.mediaCallback = (conditions) => {
         animationMocks.activeCleanup?.()
+        animationMocks.activeCleanup = undefined
         const cleanup = callback({ conditions })
         animationMocks.activeCleanup =
           typeof cleanup === 'function' ? cleanup : undefined
@@ -78,6 +89,7 @@ beforeEach(() => {
     revert: () => {
       animationMocks.mediaRevert()
       animationMocks.activeCleanup?.()
+      animationMocks.activeCleanup = undefined
     },
   }))
 
@@ -85,10 +97,20 @@ beforeEach(() => {
     'matchMedia',
     vi.fn((query: string) => ({
       matches:
-        query === '(prefers-reduced-motion: reduce)' &&
-        animationMocks.conditions.reduced,
+        (query === REDUCED_MOTION_QUERY &&
+          animationMocks.conditions.reduced) ||
+        (query === ENHANCED_SCROLL_QUERY &&
+          animationMocks.conditions.enhanced),
     })),
   )
+  vi.stubGlobal(
+    'requestAnimationFrame',
+    vi.fn((callback: FrameRequestCallback) => {
+      frameCallbacks.push(callback)
+      return frameCallbacks.length
+    }),
+  )
+  vi.stubGlobal('cancelAnimationFrame', vi.fn())
 })
 
 afterEach(() => {
@@ -98,17 +120,55 @@ afterEach(() => {
 })
 
 describe('useSmoothScroll', () => {
-  it('creates smooth scrolling, becomes ready on the next frame, and cleans up', () => {
-    let frameCallback: FrameRequestCallback | undefined
-    const requestFrame = vi.fn((callback: FrameRequestCallback) => {
-      frameCallback = callback
-      return 41
-    })
-    const cancelFrame = vi.fn()
-    vi.stubGlobal('requestAnimationFrame', requestFrame)
-    vi.stubGlobal('cancelAnimationFrame', cancelFrame)
+  it('does not initialize scrolling until the loader enables it', () => {
+    const { rerender } = render(<HookHarness enabled={false} />)
 
-    const { unmount } = render(<HookHarness />)
+    expect(screen.getByTestId('state')).toHaveAttribute(
+      'data-ready',
+      'false',
+    )
+    expect(screen.getByTestId('state')).toHaveAttribute(
+      'data-enhanced',
+      'true',
+    )
+    expect(animationMocks.smootherCreate).not.toHaveBeenCalled()
+
+    rerender(<HookHarness enabled />)
+    expect(animationMocks.smootherCreate).toHaveBeenCalledOnce()
+
+    act(() => frameCallbacks.at(-1)?.(0))
+    expect(screen.getByTestId('state')).toHaveAttribute(
+      'data-ready',
+      'true',
+    )
+  })
+
+  it('uses native scrolling when enhanced capabilities do not match', () => {
+    animationMocks.conditions = { enhanced: false, reduced: false }
+
+    render(<HookHarness enabled />)
+
+    expect(animationMocks.mediaAdd).toHaveBeenCalledWith({
+      all: 'all',
+      enhanced: ENHANCED_SCROLL_QUERY,
+      reduced: REDUCED_MOTION_QUERY,
+    })
+    expect(animationMocks.smootherCreate).not.toHaveBeenCalled()
+    expect(screen.getByTestId('state')).toHaveAttribute(
+      'data-enhanced',
+      'false',
+    )
+
+    act(() => frameCallbacks.at(-1)?.(0))
+    expect(screen.getByTestId('state')).toHaveAttribute(
+      'data-ready',
+      'true',
+    )
+  })
+
+  it('creates enhanced scrolling, becomes ready on the next frame, and cleans up', () => {
+    const cancelFrame = vi.mocked(window.cancelAnimationFrame)
+    const { unmount } = render(<HookHarness enabled />)
 
     expect(animationMocks.smootherCreate).toHaveBeenCalledWith({
       wrapper: screen.getByTestId('wrapper'),
@@ -117,36 +177,31 @@ describe('useSmoothScroll', () => {
       smoothTouch: 0,
     })
     expect(screen.getByTestId('state')).toHaveAttribute(
+      'data-enhanced',
+      'true',
+    )
+    expect(screen.getByTestId('state')).toHaveAttribute(
       'data-ready',
       'false',
     )
 
-    act(() => frameCallback?.(0))
+    act(() => frameCallbacks.at(-1)?.(0))
     expect(screen.getByTestId('state')).toHaveAttribute(
       'data-ready',
       'true',
     )
 
     unmount()
-    expect(cancelFrame).toHaveBeenCalledWith(41)
+    expect(cancelFrame).toHaveBeenCalledWith(1)
     expect(animationMocks.mediaRevert).toHaveBeenCalledOnce()
     expect(animationMocks.smootherKill).toHaveBeenCalledOnce()
   })
 
-  it('restores captured inline styles when motion changes to reduced', () => {
+  it('restores captured inline styles when enhanced eligibility is lost', () => {
     document.documentElement.style.scrollBehavior = 'auto'
     document.body.style.margin = '2px'
-    let frameCallback: FrameRequestCallback | undefined
-    vi.stubGlobal(
-      'requestAnimationFrame',
-      vi.fn((callback: FrameRequestCallback) => {
-        frameCallback = callback
-        return 7
-      }),
-    )
-    vi.stubGlobal('cancelAnimationFrame', vi.fn())
 
-    render(<HookHarness />)
+    render(<HookHarness enabled />)
     const wrapper = screen.getByTestId('wrapper')
     const content = screen.getByTestId('content')
     const capturedStyles = {
@@ -156,19 +211,24 @@ describe('useSmoothScroll', () => {
       content: content.style.cssText,
     }
 
+    act(() => frameCallbacks.at(-1)?.(0))
+
     document.documentElement.style.cssText = 'overflow: hidden;'
     document.body.style.cssText = 'height: 999px;'
     wrapper.style.cssText = 'position: fixed;'
     content.style.cssText = 'transform: translateY(20px);'
 
     act(() => {
-      animationMocks.mediaCallback?.({ reduced: true, smooth: false })
-      frameCallback?.(0)
+      animationMocks.mediaCallback?.({
+        enhanced: false,
+        reduced: false,
+      })
     })
+    act(() => frameCallbacks.at(-1)?.(0))
 
     expect(screen.getByTestId('state')).toHaveAttribute(
-      'data-reduced',
-      'true',
+      'data-enhanced',
+      'false',
     )
     expect(document.documentElement.style.cssText).toBe(
       capturedStyles.documentElement,
@@ -176,6 +236,23 @@ describe('useSmoothScroll', () => {
     expect(document.body.style.cssText).toBe(capturedStyles.body)
     expect(wrapper.style.cssText).toBe(capturedStyles.wrapper)
     expect(content.style.cssText).toBe(capturedStyles.content)
+    expect(animationMocks.smootherKill).toHaveBeenCalledOnce()
     expect(animationMocks.refresh).toHaveBeenCalledOnce()
+  })
+
+  it('reports reduced motion and never creates a smoother', () => {
+    animationMocks.conditions = { enhanced: false, reduced: true }
+
+    render(<HookHarness enabled />)
+
+    expect(screen.getByTestId('state')).toHaveAttribute(
+      'data-reduced',
+      'true',
+    )
+    expect(screen.getByTestId('state')).toHaveAttribute(
+      'data-enhanced',
+      'false',
+    )
+    expect(animationMocks.smootherCreate).not.toHaveBeenCalled()
   })
 })

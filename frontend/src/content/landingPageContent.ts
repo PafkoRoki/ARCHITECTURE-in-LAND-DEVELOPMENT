@@ -95,6 +95,3 @@ export const WHY_WORK_WITH_US_CONTENT = [
 
 export const [WHY_WORK_WITH_US_HEADING, WHY_WORK_WITH_US_BENEFITS] =
   WHY_WORK_WITH_US_CONTENT
-
-export const WHY_WORK_WITH_US_ANIMATION_QUERY =
-  '(min-width: 480px) and (prefers-reduced-motion: no-preference)'

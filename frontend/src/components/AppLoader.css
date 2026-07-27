@@ -1,8 +1,13 @@
+html.app-scroll-locked,
+body.app-scroll-locked {
+  overflow: hidden !important;
+}
+
 .shape-overlays {
+  position: fixed;
+  inset: 0;
   width: 100%;
   height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
   z-index: 9999;
+  touch-action: none;
 }

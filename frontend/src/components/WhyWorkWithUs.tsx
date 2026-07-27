@@ -8,6 +8,7 @@ import { useWhyWorkWithUsAnimation } from '../hooks/useWhyWorkWithUsAnimation'
 import { TypingHeading } from './TypingHeading'
 
 type WhyWorkWithUsProps = Readonly<{
+  enhancedScrollEnabled: boolean
   isScrollReady: boolean
 }>
 
@@ -106,11 +107,18 @@ function BenefitItem({
   )
 }
 
-export function WhyWorkWithUs({ isScrollReady }: WhyWorkWithUsProps) {
+export function WhyWorkWithUs({
+  enhancedScrollEnabled,
+  isScrollReady,
+}: WhyWorkWithUsProps) {
   const sectionRef = useRef<HTMLElement>(null)
   const idPrefix = useId()
   const { activeIndex, isAnimated, scrollToBenefit } =
-    useWhyWorkWithUsAnimation({ isScrollReady, sectionRef })
+    useWhyWorkWithUsAnimation({
+      enhancedScrollEnabled,
+      isScrollReady,
+      sectionRef,
+    })
 
   return (
     <section
@@ -153,17 +161,19 @@ export function WhyWorkWithUs({ isScrollReady }: WhyWorkWithUsProps) {
           </div>
         </div>
 
-        <div className="why-work-with-us__images" aria-hidden="true">
-          {WHY_WORK_WITH_US_BENEFITS.map((benefit) => (
-            <img
-              className="why-work-with-us__image"
-              src={benefit.image}
-              alt=""
-              draggable="false"
-              key={benefit.number}
-            />
-          ))}
-        </div>
+        {isAnimated ? (
+          <div className="why-work-with-us__images" aria-hidden="true">
+            {WHY_WORK_WITH_US_BENEFITS.map((benefit) => (
+              <img
+                className="why-work-with-us__image"
+                src={benefit.image}
+                alt=""
+                draggable="false"
+                key={benefit.number}
+              />
+            ))}
+          </div>
+        ) : null}
       </div>
     </section>
   )

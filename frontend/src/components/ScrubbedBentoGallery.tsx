@@ -7,15 +7,25 @@ import './ArchitectureArticle.css'
 import './WhyWorkWithUs.css'
 
 type ScrollReadyProps = Readonly<{
+  enhancedScrollEnabled: boolean
   isScrollReady: boolean
 }>
 
-function ScrubbedBentoGallery({ isScrollReady }: ScrollReadyProps) {
+function ScrubbedBentoGallery({
+  enhancedScrollEnabled,
+  isScrollReady,
+}: ScrollReadyProps) {
   return (
     <main>
-      <BentoGallery isScrollReady={isScrollReady} />
+      <BentoGallery
+        enhancedScrollEnabled={enhancedScrollEnabled}
+        isScrollReady={isScrollReady}
+      />
       <ArchitectureArticle />
-      <WhyWorkWithUs isScrollReady={isScrollReady} />
+      <WhyWorkWithUs
+        enhancedScrollEnabled={enhancedScrollEnabled}
+        isScrollReady={isScrollReady}
+      />
     </main>
   )
 }

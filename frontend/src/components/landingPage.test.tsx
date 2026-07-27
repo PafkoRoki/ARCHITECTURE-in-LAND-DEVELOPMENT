@@ -76,7 +76,10 @@ describe('landing page content', () => {
 
   it('renders the ordered decorative gallery and exact article copy', () => {
     const { container: gallery } = render(
-      <BentoGallery isScrollReady={false} />,
+      <BentoGallery
+        enhancedScrollEnabled={false}
+        isScrollReady={false}
+      />,
     )
     const galleryWrapper = gallery.querySelector('.gallery-wrap')
     const galleryImages = Array.from(gallery.querySelectorAll('img'))
@@ -103,11 +106,19 @@ describe('landing page content', () => {
 })
 
 describe('WhyWorkWithUs', () => {
-  it('renders a fully expanded, noninteractive fallback with decorative images', () => {
-    const { container } = render(<WhyWorkWithUs isScrollReady={false} />)
+  it('renders a fully expanded, noninteractive fallback without the image pane', () => {
+    const { container } = render(
+      <WhyWorkWithUs
+        enhancedScrollEnabled={false}
+        isScrollReady={false}
+      />,
+    )
 
     expect(screen.queryByRole('button')).not.toBeInTheDocument()
     expect(screen.getAllByRole('heading', { level: 3 })).toHaveLength(4)
+    expect(container.querySelector('.why-work-with-us')).not.toHaveClass(
+      'why-work-with-us--animated',
+    )
 
     const bodies = container.querySelectorAll('.why-work-with-us__body')
     expect(bodies).toHaveLength(4)
@@ -115,6 +126,29 @@ describe('WhyWorkWithUs', () => {
       expect(body).not.toHaveAttribute('aria-hidden')
       expect(body).not.toHaveAttribute('aria-labelledby')
     })
+
+    expect(
+      container.querySelector('.why-work-with-us__images'),
+    ).not.toBeInTheDocument()
+  })
+
+  it('connects animated controls to regions and supports click and keyboard selection', () => {
+    whyAnimation.current.activeIndex = 1
+    whyAnimation.current.isAnimated = true
+    const selectBenefit = whyAnimation.current.scrollToBenefit
+
+    const { container } = render(
+      <WhyWorkWithUs enhancedScrollEnabled isScrollReady />,
+    )
+
+    const buttons = screen.getAllByRole('button')
+    const regions = Array.from(
+      container.querySelectorAll<HTMLElement>(
+        '.why-work-with-us__body[role="region"]',
+      ),
+    )
+    expect(buttons).toHaveLength(4)
+    expect(regions).toHaveLength(4)
 
     const imageWrapper = container.querySelector(
       '.why-work-with-us__images',
@@ -135,23 +169,6 @@ describe('WhyWorkWithUs', () => {
       expect(image).toHaveAttribute('alt', '')
       expect(image).toHaveAttribute('draggable', 'false')
     })
-  })
-
-  it('connects animated controls to regions and supports click and keyboard selection', () => {
-    whyAnimation.current.activeIndex = 1
-    whyAnimation.current.isAnimated = true
-    const selectBenefit = whyAnimation.current.scrollToBenefit
-
-    const { container } = render(<WhyWorkWithUs isScrollReady />)
-
-    const buttons = screen.getAllByRole('button')
-    const regions = Array.from(
-      container.querySelectorAll<HTMLElement>(
-        '.why-work-with-us__body[role="region"]',
-      ),
-    )
-    expect(buttons).toHaveLength(4)
-    expect(regions).toHaveLength(4)
 
     buttons.forEach((button, index) => {
       const controlledId = button.getAttribute('aria-controls')

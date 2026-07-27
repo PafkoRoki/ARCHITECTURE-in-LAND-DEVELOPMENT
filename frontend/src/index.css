@@ -14,6 +14,18 @@
   --type-body-tracking: 0.01em;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
 body {
   color: #000000;
   background-color: #ffffff;

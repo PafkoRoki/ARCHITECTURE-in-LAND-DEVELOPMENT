@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { BentoGallery } from '../components/BentoGallery'
 
 const bentoMocks = vi.hoisted(() => ({
@@ -54,10 +54,38 @@ vi.mock('../lib/gsap', () => ({
 }))
 
 describe('useBentoGalleryAnimation', () => {
+  beforeEach(() => {
+    bentoMocks.contexts.length = 0
+    bentoMocks.delayedCalls.length = 0
+  })
+
+  it('leaves the native gallery untouched when enhanced scrolling is disabled', () => {
+    const addListener = vi.spyOn(window, 'addEventListener')
+    const { container } = render(
+      <BentoGallery
+        enhancedScrollEnabled={false}
+        isScrollReady
+      />,
+    )
+
+    expect(bentoMocks.contexts).toHaveLength(0)
+    expect(bentoMocks.delayedCalls).toHaveLength(0)
+    expect(bentoMocks.flipGetState).not.toHaveBeenCalled()
+    expect(bentoMocks.flipTo).not.toHaveBeenCalled()
+    expect(bentoMocks.refresh).not.toHaveBeenCalled()
+    expect(addListener).not.toHaveBeenCalledWith(
+      'resize',
+      expect.any(Function),
+    )
+    expect(container.querySelector('.gallery')).not.toHaveClass(
+      'gallery--final',
+    )
+  })
+
   it('rebuilds on resize and releases delayed calls, context, and listener', () => {
     const removeListener = vi.spyOn(window, 'removeEventListener')
     const { container, unmount } = render(
-      <BentoGallery isScrollReady />,
+      <BentoGallery enhancedScrollEnabled isScrollReady />,
     )
     const gallery = container.querySelector('.gallery')
 
@@ -80,5 +108,36 @@ describe('useBentoGalleryAnimation', () => {
       expect.any(Function),
     )
     expect(gallery).not.toHaveClass('gallery--final')
+  })
+
+  it('fully tears down the enhanced gallery when eligibility is lost', () => {
+    const removeListener = vi.spyOn(window, 'removeEventListener')
+    const { container, rerender } = render(
+      <BentoGallery enhancedScrollEnabled isScrollReady />,
+    )
+    const gallery = container.querySelector('.gallery')
+    const firstContext = bentoMocks.contexts[0]
+    const [refreshCall, resizeCall] = bentoMocks.delayedCalls
+
+    rerender(
+      <BentoGallery
+        enhancedScrollEnabled={false}
+        isScrollReady
+      />,
+    )
+
+    expect(firstContext?.revert).toHaveBeenCalledOnce()
+    expect(refreshCall?.kill).toHaveBeenCalledOnce()
+    expect(resizeCall?.kill).toHaveBeenCalledOnce()
+    expect(removeListener).toHaveBeenCalledWith(
+      'resize',
+      expect.any(Function),
+    )
+    expect(bentoMocks.set).toHaveBeenCalledWith(
+      expect.any(Array),
+      { clearProps: 'all' },
+    )
+    expect(gallery).not.toHaveClass('gallery--final')
+    expect(bentoMocks.contexts).toHaveLength(1)
   })
 })

@@ -44,26 +44,38 @@ describe('useWhyWorkWithUsAnimation', () => {
     whyMocks.tweenTo.mockReturnValue({ kill: whyMocks.tweenKill })
   })
 
-  it('configures pinning and snapping, then releases media and animation resources', () => {
-    let mediaListener: (() => void) | undefined
-    const mediaQuery = {
-      matches: true,
-      addEventListener: vi.fn(
-        (_event: string, listener: () => void) => {
-          mediaListener = listener
-        },
-      ),
-      removeEventListener: vi.fn(),
-    }
-    vi.stubGlobal('matchMedia', vi.fn(() => mediaQuery))
+  it('keeps native benefits static and does not allocate animation resources', () => {
+    const { container } = render(
+      <WhyWorkWithUs
+        enhancedScrollEnabled={false}
+        isScrollReady
+      />,
+    )
 
-    const { unmount } = render(<WhyWorkWithUs isScrollReady />)
+    expect(whyMocks.createScrollTrigger).not.toHaveBeenCalled()
+    expect(whyMocks.timeline).not.toHaveBeenCalled()
+    expect(whyMocks.set).not.toHaveBeenCalled()
+    expect(container.querySelector('.why-work-with-us')).not.toHaveClass(
+      'why-work-with-us--animated',
+    )
+    expect(
+      container.querySelector('.why-work-with-us__images'),
+    ).not.toBeInTheDocument()
+    expect(screen.queryByRole('button')).not.toBeInTheDocument()
+    container
+      .querySelectorAll('.why-work-with-us__body')
+      .forEach((body) => {
+        expect(body).not.toHaveAttribute('aria-hidden')
+        expect(body).not.toHaveAttribute('role')
+      })
+  })
+
+  it('configures desktop pinning and snapping, then releases animation resources', () => {
+    const { unmount } = render(
+      <WhyWorkWithUs enhancedScrollEnabled isScrollReady />,
+    )
     act(() => vi.runAllTimers())
 
-    expect(mediaQuery.addEventListener).toHaveBeenCalledWith(
-      'change',
-      mediaListener,
-    )
     expect(whyMocks.createScrollTrigger).toHaveBeenCalledWith(
       expect.objectContaining({
         start: 'top top',
@@ -95,12 +107,33 @@ describe('useWhyWorkWithUsAnimation', () => {
     )
 
     unmount()
-    expect(mediaQuery.removeEventListener).toHaveBeenCalledWith(
-      'change',
-      mediaListener,
-    )
     expect(whyMocks.tweenKill).toHaveBeenCalledOnce()
     expect(whyMocks.contextRevert).toHaveBeenCalledOnce()
-    vi.unstubAllGlobals()
+  })
+
+  it('tears down pinning and exposes static content when eligibility is lost', () => {
+    const { container, rerender } = render(
+      <WhyWorkWithUs enhancedScrollEnabled isScrollReady />,
+    )
+    act(() => vi.runAllTimers())
+
+    fireEvent.click(screen.getAllByRole('button')[1])
+    rerender(
+      <WhyWorkWithUs
+        enhancedScrollEnabled={false}
+        isScrollReady
+      />,
+    )
+
+    expect(whyMocks.tweenKill).toHaveBeenCalledOnce()
+    expect(whyMocks.contextRevert).toHaveBeenCalledOnce()
+    expect(container.querySelector('.why-work-with-us')).not.toHaveClass(
+      'why-work-with-us--animated',
+    )
+    expect(screen.queryByRole('button')).not.toBeInTheDocument()
+    expect(whyMocks.timeline).toHaveBeenCalledOnce()
+    container
+      .querySelectorAll('.why-work-with-us__body')
+      .forEach((body) => expect(body).not.toHaveAttribute('aria-hidden'))
   })
 })
