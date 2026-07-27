@@ -338,6 +338,17 @@ function WhyWorkWithUs() {
     )
     const smoother = ScrollSmoother.get()
 
+    console.info(
+      'scrollToBenefit',
+      JSON.stringify({
+        index,
+        target,
+        boundedTarget,
+        maxScroll: ScrollTrigger.maxScroll(window),
+        hasSmoother: Boolean(smoother),
+      }),
+    )
+
     scrollTweenRef.current?.kill()
     scrollTweenRef.current = smoother
       ? gsap.to(smoother, {
