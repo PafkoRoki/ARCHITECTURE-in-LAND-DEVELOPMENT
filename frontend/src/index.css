@@ -16,19 +16,11 @@
     format('woff');
 }
 
-:root {
+body {
   color: #bbbaa6;
   background-color: #0e100f;
   font-family: Mori, sans-serif;
   font-weight: 400;
-  font-synthesis: none;
   line-height: 1.45;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-body {
   margin: 0;
-  background-color: #0e100f;
 }

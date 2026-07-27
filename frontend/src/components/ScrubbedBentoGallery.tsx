@@ -3,19 +3,27 @@ import { ExpoScaleEase } from 'gsap/EasePack'
 import { Flip } from 'gsap/Flip'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import architectsImage from '../assets/architects.jpg'
+import cityImage from '../assets/city.png'
+import houseImage from '../assets/house.jpg'
+import houseArchitectImage from '../assets/house_architect.jpg'
+import housesImage from '../assets/houses.png'
+import poznanImage from '../assets/poznan.jpg'
+import renderImage from '../assets/render.png'
+import visualizationImage from '../assets/visualization.jpg'
 import './ScrubbedBentoGallery.css'
 
 gsap.registerPlugin(ScrollTrigger, Flip, ExpoScaleEase)
 
 const GALLERY_IMAGES = [
-  'https://assets.codepen.io/16327/portrait-pattern-1.jpg',
-  'https://assets.codepen.io/16327/portrait-image-12.jpg',
-  'https://assets.codepen.io/16327/portrait-image-8.jpg',
-  'https://assets.codepen.io/16327/portrait-pattern-2.jpg',
-  'https://assets.codepen.io/16327/portrait-image-4.jpg',
-  'https://assets.codepen.io/16327/portrait-image-3.jpg',
-  'https://assets.codepen.io/16327/portrait-pattern-3.jpg',
-  'https://assets.codepen.io/16327/portrait-image-1.jpg',
+  poznanImage,
+  cityImage,
+  architectsImage,
+  houseArchitectImage,
+  housesImage,
+  renderImage,
+  houseImage,
+  visualizationImage,
 ] as const
 
 const SAMPLE_COPY =
