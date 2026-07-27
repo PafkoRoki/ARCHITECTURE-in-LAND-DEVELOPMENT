@@ -16,7 +16,7 @@
   --gallery-expanded-width: calc(
     100vw - var(--gallery-edge-inset) - var(--gallery-edge-inset)
   );
-  --gallery-gap: clamp(12px, 1.25vw, 20px);
+  --gallery-gap: var(--gallery-edge-inset);
   --gallery-radius: clamp(16px, 2vw, 28px);
 
   position: relative;
