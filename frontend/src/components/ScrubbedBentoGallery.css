@@ -42,14 +42,9 @@
 
 .gallery__item img {
   display: block;
-  filter: grayscale(0.65) contrast(1.3);
   object-fit: cover;
   width: 100%;
   height: 100%;
-}
-
-.gallery__item:nth-child(3) img {
-  filter: none;
 }
 
 .gallery--bento {
