@@ -1,25 +1,9 @@
-@font-face {
-  font-display: block;
-  font-family: Mori;
-  font-style: normal;
-  font-weight: 400;
-  src: url('https://assets.codepen.io/16327/PPMori-Regular.woff')
-    format('woff');
-}
-
-@font-face {
-  font-display: block;
-  font-family: Mori;
-  font-style: normal;
-  font-weight: 600;
-  src: url('https://assets.codepen.io/16327/PPMori-SemiBold.woff')
-    format('woff');
-}
+@import url('https://fonts.googleapis.com/css2?family=TASA+Orbiter:wght@400..800&display=swap');
 
 body {
   color: #ffffff;
   background-color: #000000;
-  font-family: Mori, sans-serif;
+  font-family: 'TASA Orbiter', sans-serif;
   font-weight: 400;
   line-height: 1.45;
   margin: 0;
