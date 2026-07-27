@@ -338,31 +338,20 @@ function WhyWorkWithUs() {
     )
     const smoother = ScrollSmoother.get()
 
-    console.info(
-      'scrollToBenefit',
-      JSON.stringify({
-        index,
-        target,
-        boundedTarget,
-        maxScroll: ScrollTrigger.maxScroll(window),
-        hasSmoother: Boolean(smoother),
-      }),
-    )
-
     scrollTweenRef.current?.kill()
-    scrollTweenRef.current = smoother
-      ? gsap.to(smoother, {
-          scrollTop: boundedTarget,
-          duration: 1,
-          ease: 'power2.inOut',
-          overwrite: 'auto',
-        })
-      : gsap.to(window, {
-          scrollTo: boundedTarget,
-          duration: 1,
-          ease: 'power2.inOut',
-          overwrite: 'auto',
-        })
+    scrollTweenRef.current = null
+
+    if (smoother) {
+      smoother.scrollTo(boundedTarget, true)
+      return
+    }
+
+    scrollTweenRef.current = gsap.to(window, {
+      scrollTo: boundedTarget,
+      duration: 1,
+      ease: 'power2.inOut',
+      overwrite: 'auto',
+    })
   }
 
   return (
