@@ -1,0 +1,23 @@
+.typing-heading {
+  display: grid;
+  width: 100%;
+}
+
+.typing-heading__layout-copy,
+.typing-heading__static,
+.typing-heading__animated {
+  grid-area: 1 / 1;
+}
+
+.typing-heading__layout-copy {
+  visibility: hidden;
+}
+
+.typing-heading__static,
+.typing-heading__animated {
+  display: block;
+}
+
+.typing-heading__cursor {
+  flex: none;
+}

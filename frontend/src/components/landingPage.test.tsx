@@ -88,9 +88,12 @@ describe('landing page content', () => {
     expect(galleryImages.every((image) => image.alt === '')).toBe(true)
 
     const { container: article } = render(<ArchitectureArticle />)
-    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
-      'Architecture in land development',
-    )
+    expect(
+      screen.getByRole('heading', {
+        level: 2,
+        name: 'Architecture in land development',
+      }),
+    ).toBeInTheDocument()
     expect(
       Array.from(article.querySelectorAll('p'), (paragraph) =>
         paragraph.textContent,

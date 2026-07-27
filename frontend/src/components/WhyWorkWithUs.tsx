@@ -5,6 +5,7 @@ import {
 } from '../content/landingPageContent'
 import type { WhyWorkWithUsBenefit } from '../content/landingPageContent'
 import { useWhyWorkWithUsAnimation } from '../hooks/useWhyWorkWithUsAnimation'
+import { TypingHeading } from './TypingHeading'
 
 type WhyWorkWithUsProps = Readonly<{
   isScrollReady: boolean
@@ -124,8 +125,9 @@ export function WhyWorkWithUs({ isScrollReady }: WhyWorkWithUsProps) {
           <h2
             id={`${idPrefix}-heading`}
             className="why-work-with-us__heading"
+            aria-label={WHY_WORK_WITH_US_HEADING}
           >
-            {WHY_WORK_WITH_US_HEADING}
+            <TypingHeading text={WHY_WORK_WITH_US_HEADING} />
           </h2>
 
           <div className="why-work-with-us__list-wrapper">
