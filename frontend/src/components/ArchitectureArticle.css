@@ -6,9 +6,9 @@
 
 .gallery-copy h2 {
   color: #ff8709;
-  font-size: var(--type-display-size);
+  font-size: clamp(3.5rem, 5vw, 4.5rem);
   line-height: var(--type-display-leading);
-  letter-spacing: var(--type-display-tracking);
+  letter-spacing: -0.055em;
 }
 
 .gallery-copy p {
