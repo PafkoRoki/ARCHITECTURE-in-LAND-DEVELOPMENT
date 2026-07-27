@@ -40,10 +40,10 @@
   flex: none;
   margin: 0;
   color: #ff8709;
-  font-size: var(--type-display-size);
-  font-weight: 400;
+  font-size: clamp(3.5rem, 5vw, 4.5rem);
+  font-weight: 600;
   line-height: var(--type-display-leading);
-  letter-spacing: var(--type-display-tracking);
+  letter-spacing: -0.055em;
 }
 
 .why-work-with-us__list-wrapper {
