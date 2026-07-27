@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollSmoother } from 'gsap/ScrollSmoother'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -7,9 +7,15 @@ import ScrubbedBentoGallery from './components/ScrubbedBentoGallery'
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother)
 
+const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
+const SMOOTH_MOTION_QUERY = '(prefers-reduced-motion: no-preference)'
+
 function App() {
   const smoothWrapperRef = useRef<HTMLDivElement>(null)
   const smoothContentRef = useRef<HTMLDivElement>(null)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(() =>
+    window.matchMedia(REDUCED_MOTION_QUERY).matches,
+  )
 
   useLayoutEffect(() => {
     const wrapper = smoothWrapperRef.current
@@ -18,8 +24,15 @@ function App() {
     if (!wrapper || !content) return
 
     const media = gsap.matchMedia()
+    const reducedMotion = window.matchMedia(REDUCED_MOTION_QUERY)
+    const syncMotionPreference = () => {
+      setPrefersReducedMotion(reducedMotion.matches)
+    }
 
-    media.add('(prefers-reduced-motion: no-preference)', () => {
+    syncMotionPreference()
+    reducedMotion.addEventListener('change', syncMotionPreference)
+
+    media.add(SMOOTH_MOTION_QUERY, () => {
       const smoother = ScrollSmoother.create({
         wrapper,
         content,
@@ -30,7 +43,10 @@ function App() {
       return () => smoother.kill()
     })
 
-    return () => media.revert()
+    return () => {
+      reducedMotion.removeEventListener('change', syncMotionPreference)
+      media.revert()
+    }
   }, [])
 
   return (
@@ -38,7 +54,9 @@ function App() {
       <AppLoader />
       <div id="smooth-wrapper" ref={smoothWrapperRef}>
         <div id="smooth-content" ref={smoothContentRef}>
-          <ScrubbedBentoGallery />
+          <ScrubbedBentoGallery
+            key={prefersReducedMotion ? 'reduced-motion' : 'smooth-motion'}
+          />
         </div>
       </div>
     </>

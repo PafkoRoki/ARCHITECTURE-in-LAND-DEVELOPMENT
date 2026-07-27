@@ -162,7 +162,8 @@ function WhyWorkWithUs() {
         ScrollTrigger.create({
           trigger: wrapper,
           start: 'top top',
-          end: '200% bottom',
+          endTrigger: section,
+          end: 'bottom bottom',
           pin: true,
           invalidateOnRefresh: true,
         })
@@ -330,18 +331,23 @@ function WhyWorkWithUs() {
     const target =
       timelineScrollTrigger.start +
       (timelineScrollTrigger.end - timelineScrollTrigger.start) * progress
+    const boundedTarget = gsap.utils.clamp(
+      0,
+      ScrollTrigger.maxScroll(window),
+      target,
+    )
     const smoother = ScrollSmoother.get()
 
     scrollTweenRef.current?.kill()
     scrollTweenRef.current = smoother
       ? gsap.to(smoother, {
-          scrollTop: target,
+          scrollTop: boundedTarget,
           duration: 1,
           ease: 'power2.inOut',
           overwrite: 'auto',
         })
       : gsap.to(window, {
-          scrollTo: target,
+          scrollTo: boundedTarget,
           duration: 1,
           ease: 'power2.inOut',
           overwrite: 'auto',
