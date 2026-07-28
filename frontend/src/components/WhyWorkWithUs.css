@@ -7,7 +7,7 @@
 
 .why-work-with-us {
   color: #000000;
-  background-color: #ffffff;
+  background-color: var(--color-background);
   width: 100%;
   height: 300svh;
   padding-right: var(--card-spacing);
@@ -33,7 +33,7 @@
   min-width: 0;
   height: 100%;
   padding: 4rem 4rem 2.5rem;
-  background-color: #ffffff;
+  background-color: var(--color-background);
 }
 
 .why-work-with-us__heading {
@@ -71,7 +71,7 @@
   margin: 0;
   padding-top: 1rem;
   border-top: 1px solid #e0e0e0;
-  background-color: #ffffff;
+  background-color: var(--color-background);
 }
 
 .why-work-with-us__title-shell {

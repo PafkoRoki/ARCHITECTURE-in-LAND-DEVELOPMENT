@@ -98,3 +98,86 @@ export const [WHY_WORK_WITH_US_HEADING, WHY_WORK_WITH_US_BENEFITS] =
 
 export const WHY_WORK_WITH_US_ANIMATION_QUERY =
   '(min-width: 480px) and (prefers-reduced-motion: no-preference)'
+
+export type ProcessStep = Readonly<{
+  number: string
+  title: string
+  description: string
+  image: string
+}>
+
+export type ProcessContent = Readonly<{
+  heading: string
+  intro: string
+  steps: readonly [
+    ProcessStep,
+    ProcessStep,
+    ProcessStep,
+    ProcessStep,
+    ProcessStep,
+  ]
+}>
+
+export const PROCESS_CONTENT = {
+  heading: 'Nasz proces',
+  intro:
+    'Od pierwszej rozmowy po realizację — prowadzimy projekt jasno, etap po etapie.',
+  steps: [
+    {
+      number: '01',
+      title: 'Poznanie potrzeb',
+      description:
+        'Zaczynamy od rozmowy, analizy działki lub inwestycji oraz ustalenia budżetu, priorytetów i oczekiwań.',
+      image: housesImage,
+    },
+    {
+      number: '02',
+      title: 'Koncepcja',
+      description:
+        'Tworzymy pierwsze szkice i układ funkcjonalny, ustalając skalę, kierunek i najważniejsze założenia projektu.',
+      image: cityImage,
+    },
+    {
+      number: '03',
+      title: 'Dopracowanie koncepcji',
+      description:
+        'Rozwijamy wybrany wariant w modelu 3D, dopracowujemy bryłę, układ i materiały oraz przygotowujemy wizualizacje.',
+      image: visualizationImage,
+    },
+    {
+      number: '04',
+      title: 'Projekt architektoniczno-budowlany',
+      description:
+        'Przekładamy koncepcję na kompletne rozwiązania projektowe, przygotowujemy dokumentację i koordynujemy uzgodnienia branżowe.',
+      image: houseImage,
+    },
+    {
+      number: '05',
+      title: 'Dokumentacja i nadzór',
+      description:
+        'Przygotowujemy materiały do pozwolenia na budowę i wspieramy proces realizacji na etapie budowy.',
+      image: architectsImage,
+    },
+  ],
+} as const satisfies ProcessContent
+
+export const {
+  heading: PROCESS_HEADING,
+  intro: PROCESS_INTRO,
+  steps: PROCESS_STEPS,
+} = PROCESS_CONTENT
+
+export type FooterContent = Readonly<{
+  eyebrow: string
+  heading: string
+  supportingText: string
+  identity: string
+}>
+
+export const FOOTER_CONTENT = {
+  eyebrow: 'ARCHITECTURE / LAND / COMMUNITY',
+  heading: 'From land to lasting places.',
+  supportingText:
+    'A framework for buildings, landscapes, and communities to mature together.',
+  identity: 'Architecture in Land Development',
+} as const satisfies FooterContent

@@ -2,6 +2,7 @@
 
 :root {
   font-family: 'TASA Orbiter', sans-serif;
+  --color-background: #f4f4f2;
   --type-display-size: 3rem;
   --type-title-size: 1.5rem;
   --type-body-size: 1rem;
@@ -16,7 +17,7 @@
 
 body {
   color: #000000;
-  background-color: #ffffff;
+  background-color: var(--color-background);
   font-family: inherit;
   font-size: var(--type-body-size);
   font-weight: 400;

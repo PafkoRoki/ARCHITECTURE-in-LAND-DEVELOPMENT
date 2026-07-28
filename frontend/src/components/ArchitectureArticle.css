@@ -1,6 +1,6 @@
 .gallery-copy {
   color: #000000;
-  background-color: #ffffff;
+  background-color: var(--color-background);
   padding: 2rem 5rem clamp(6rem, 10vw, 10rem);
 }
 
