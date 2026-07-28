@@ -241,8 +241,7 @@ describe('OurProcess timeline states', () => {
     const progress = container.querySelector('[data-timeline-progress]')
 
     expect(timeline).toHaveAttribute('data-timeline-animated', 'false')
-    expect(progress).toHaveAttribute('data-rendered-height', '640')
-    expect(progress).toHaveAttribute('data-rendered-opacity', '1')
+    expect(progress).toHaveStyle({ height: '640px', opacity: '1' })
   })
 
   it('uses document-scroll transforms when scrolling is ready', () => {
@@ -285,8 +284,7 @@ describe('OurProcess timeline states', () => {
     const progress = container.querySelector('[data-timeline-progress]')
 
     expect(timeline).toHaveAttribute('data-timeline-animated', 'false')
-    expect(progress).toHaveAttribute('data-rendered-height', '640')
-    expect(progress).toHaveAttribute('data-rendered-opacity', '1')
+    expect(progress).toHaveStyle({ height: '640px', opacity: '1' })
   })
 
   it('observes the ordered list for size changes and disconnects on cleanup', () => {
