@@ -167,17 +167,27 @@ export const {
   steps: PROCESS_STEPS,
 } = PROCESS_CONTENT
 
+export type FooterBusinessDetail = Readonly<{
+  label: string
+  value: string
+}>
+
 export type FooterContent = Readonly<{
-  eyebrow: string
   heading: string
-  supportingText: string
   identity: string
+  businessDetails: readonly [
+    FooterBusinessDetail,
+    FooterBusinessDetail,
+    FooterBusinessDetail,
+  ]
 }>
 
 export const FOOTER_CONTENT = {
-  eyebrow: 'ARCHITECTURE / LAND / COMMUNITY',
   heading: 'From land to lasting places.',
-  supportingText:
-    'A framework for buildings, landscapes, and communities to mature together.',
   identity: 'Architecture in Land Development',
+  businessDetails: [
+    { label: 'NIP', value: '—' },
+    { label: 'Address', value: '—' },
+    { label: 'Contact', value: '—' },
+  ],
 } as const satisfies FooterContent
