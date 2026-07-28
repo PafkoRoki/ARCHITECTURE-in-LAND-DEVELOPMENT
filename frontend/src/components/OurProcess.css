@@ -33,7 +33,7 @@
 .our-process__heading {
   margin: 0;
   color: #ff8709;
-  font-size: clamp(3.5rem, 5vw, 4.5rem);
+  font-size: var(--type-display-size);
   font-weight: 600;
   line-height: var(--type-display-leading);
   letter-spacing: -0.055em;
@@ -88,7 +88,7 @@
 .timeline__title {
   margin: 0;
   color: #ff8709;
-  font-size: clamp(1.5rem, 2.5vw, 3rem);
+  font-size: var(--type-feature-title-size);
   font-weight: 400;
   line-height: var(--type-title-leading);
   letter-spacing: -0.03em;
@@ -108,7 +108,7 @@
   max-width: 46rem;
   margin: 0;
   color: #4c4c4c;
-  font-size: clamp(1rem, 1.45vw, 1.25rem);
+  font-size: var(--type-body-large-size);
   line-height: var(--type-body-leading);
   letter-spacing: var(--type-body-tracking);
 }
@@ -212,10 +212,6 @@
     gap: 1rem;
   }
 
-  .timeline__title {
-    font-size: clamp(1.5rem, 6vw, 2.25rem);
-  }
-
   .timeline__content {
     grid-column: 2;
   }
@@ -230,10 +226,6 @@
 }
 
 @media (max-width: 479px) {
-  .our-process__heading {
-    font-size: var(--type-display-size);
-  }
-
   .timeline__content {
     grid-column: 1 / -1;
     padding-left: calc(var(--timeline-marker-size) + 1rem);

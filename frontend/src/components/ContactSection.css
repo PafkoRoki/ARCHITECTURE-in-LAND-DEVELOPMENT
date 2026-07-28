@@ -50,7 +50,7 @@
 .contact-section__heading {
   margin: 0;
   color: #ff8709;
-  font-size: clamp(3.5rem, 5vw, 4.5rem);
+  font-size: var(--type-display-size);
   font-weight: 600;
   line-height: var(--type-display-leading);
   letter-spacing: -0.055em;
@@ -61,7 +61,7 @@
   max-width: 35rem;
   margin: clamp(1.25rem, 2.5vw, 2rem) 0 0;
   color: #4c4c4c;
-  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  font-size: var(--type-body-large-size);
   line-height: var(--type-body-leading);
   letter-spacing: var(--type-body-tracking);
 }
@@ -174,7 +174,7 @@
   color: #ffffff;
   background-color: #000000;
   border-radius: 999px;
-  font-size: clamp(0.625rem, 0.8vw, 0.75rem);
+  font-size: var(--type-micro-size);
   line-height: var(--type-label-leading);
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -190,9 +190,6 @@
     padding: 2rem;
   }
 
-  .contact-section__heading {
-    font-size: clamp(2.75rem, 6vw, 3.75rem);
-  }
 }
 
 @media (max-width: 767px) {
@@ -219,10 +216,6 @@
   .contact-section__form-panel,
   .contact-section__testimonials-panel {
     padding: 1.5rem;
-  }
-
-  .contact-section__heading {
-    font-size: var(--type-display-size);
   }
 
   .contact-section__submit {

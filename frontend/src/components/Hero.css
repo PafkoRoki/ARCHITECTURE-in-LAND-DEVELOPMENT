@@ -22,7 +22,7 @@
   align-self: end;
   margin: 0;
   color: #ff8709;
-  font-size: clamp(3.5rem, 5vw, 4.5rem);
+  font-size: var(--type-display-size);
   font-weight: 600;
   line-height: var(--type-display-leading);
   letter-spacing: -0.055em;
