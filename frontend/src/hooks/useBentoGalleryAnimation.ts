@@ -3,14 +3,12 @@ import type { RefObject } from 'react'
 import { ExpoScaleEase, Flip, gsap, ScrollTrigger } from '../lib/gsap'
 
 type UseBentoGalleryAnimationOptions = Readonly<{
-  enhancedScrollEnabled: boolean
   galleryRef: RefObject<HTMLDivElement | null>
   galleryWrapperRef: RefObject<HTMLDivElement | null>
   isScrollReady: boolean
 }>
 
 export function useBentoGalleryAnimation({
-  enhancedScrollEnabled,
   galleryRef,
   galleryWrapperRef,
   isScrollReady,
@@ -19,14 +17,7 @@ export function useBentoGalleryAnimation({
     const gallery = galleryRef.current
     const galleryWrapper = galleryWrapperRef.current
 
-    if (
-      !enhancedScrollEnabled ||
-      !gallery ||
-      !galleryWrapper ||
-      !isScrollReady
-    ) {
-      return
-    }
+    if (!gallery || !galleryWrapper || !isScrollReady) return
 
     let flipContext: ReturnType<typeof gsap.context> | undefined
     const refreshCall = gsap
@@ -81,5 +72,5 @@ export function useBentoGalleryAnimation({
       flipContext?.revert()
       gallery.classList.remove('gallery--final')
     }
-  }, [enhancedScrollEnabled, galleryRef, galleryWrapperRef, isScrollReady])
+  }, [galleryRef, galleryWrapperRef, isScrollReady])
 }

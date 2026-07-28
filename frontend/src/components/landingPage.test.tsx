@@ -1,10 +1,13 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import App from '../App'
 import { ArchitectureArticle } from './ArchitectureArticle'
 import { BentoGallery } from './BentoGallery'
+import { Footer } from './Footer'
 import { WhyWorkWithUs } from './WhyWorkWithUs'
 import {
   ARCHITECTURE_ARTICLE_CONTENT,
+  FOOTER_CONTENT,
   GALLERY_IMAGES,
   WHY_WORK_WITH_US_BENEFITS,
 } from '../content/landingPageContent'
@@ -23,6 +26,19 @@ vi.mock('../hooks/useBentoGalleryAnimation', () => ({
 
 vi.mock('../hooks/useWhyWorkWithUsAnimation', () => ({
   useWhyWorkWithUsAnimation: () => whyAnimation.current,
+}))
+
+vi.mock('../hooks/useSmoothScroll', () => ({
+  useSmoothScroll: () => ({
+    wrapperRef: { current: null },
+    contentRef: { current: null },
+    isScrollReady: false,
+    prefersReducedMotion: false,
+  }),
+}))
+
+vi.mock('./AppLoader', () => ({
+  default: () => null,
 }))
 
 const expectedParagraphs = [
@@ -63,7 +79,21 @@ beforeEach(() => {
 })
 
 describe('landing page content', () => {
-  it('keeps the gallery, article, and benefit content in the intended order', () => {
+  it('renders the minimal hero before the image gallery', () => {
+    const { container } = render(<App />)
+    const main = container.querySelector('main')
+    const hero = main?.querySelector(':scope > .hero')
+    const gallery = main?.querySelector(':scope > .gallery-wrap')
+
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Land, considered.' }),
+    ).toBeInTheDocument()
+    expect(hero).toHaveTextContent('Architecture in Land Development')
+    expect(hero).not.toBeNull()
+    expect(hero?.nextElementSibling).toBe(gallery)
+  })
+
+  it('keeps the gallery, article, benefit, and footer content exact', () => {
     expect(GALLERY_IMAGES.map(assetName)).toEqual(expectedGalleryImages)
     expect(ARCHITECTURE_ARTICLE_CONTENT).toEqual({
       heading: 'Architecture in land development',
@@ -72,14 +102,18 @@ describe('landing page content', () => {
     expect(
       WHY_WORK_WITH_US_BENEFITS.map(({ number, title }) => [number, title]),
     ).toEqual(expectedBenefits)
+    expect(FOOTER_CONTENT).toEqual({
+      eyebrow: 'ARCHITECTURE / LAND / COMMUNITY',
+      heading: 'From land to lasting places.',
+      supportingText:
+        'A framework for buildings, landscapes, and communities to mature together.',
+      identity: 'Architecture in Land Development',
+    })
   })
 
   it('renders the ordered decorative gallery and exact article copy', () => {
     const { container: gallery } = render(
-      <BentoGallery
-        enhancedScrollEnabled={false}
-        isScrollReady={false}
-      />,
+      <BentoGallery isScrollReady={false} />,
     )
     const galleryWrapper = gallery.querySelector('.gallery-wrap')
     const galleryImages = Array.from(gallery.querySelectorAll('img'))
@@ -106,19 +140,11 @@ describe('landing page content', () => {
 })
 
 describe('WhyWorkWithUs', () => {
-  it('renders a fully expanded, noninteractive fallback without the image pane', () => {
-    const { container } = render(
-      <WhyWorkWithUs
-        enhancedScrollEnabled={false}
-        isScrollReady={false}
-      />,
-    )
+  it('renders a fully expanded, noninteractive fallback with decorative images', () => {
+    const { container } = render(<WhyWorkWithUs isScrollReady={false} />)
 
     expect(screen.queryByRole('button')).not.toBeInTheDocument()
     expect(screen.getAllByRole('heading', { level: 3 })).toHaveLength(4)
-    expect(container.querySelector('.why-work-with-us')).not.toHaveClass(
-      'why-work-with-us--animated',
-    )
 
     const bodies = container.querySelectorAll('.why-work-with-us__body')
     expect(bodies).toHaveLength(4)
@@ -126,29 +152,6 @@ describe('WhyWorkWithUs', () => {
       expect(body).not.toHaveAttribute('aria-hidden')
       expect(body).not.toHaveAttribute('aria-labelledby')
     })
-
-    expect(
-      container.querySelector('.why-work-with-us__images'),
-    ).not.toBeInTheDocument()
-  })
-
-  it('connects animated controls to regions and supports click and keyboard selection', () => {
-    whyAnimation.current.activeIndex = 1
-    whyAnimation.current.isAnimated = true
-    const selectBenefit = whyAnimation.current.scrollToBenefit
-
-    const { container } = render(
-      <WhyWorkWithUs enhancedScrollEnabled isScrollReady />,
-    )
-
-    const buttons = screen.getAllByRole('button')
-    const regions = Array.from(
-      container.querySelectorAll<HTMLElement>(
-        '.why-work-with-us__body[role="region"]',
-      ),
-    )
-    expect(buttons).toHaveLength(4)
-    expect(regions).toHaveLength(4)
 
     const imageWrapper = container.querySelector(
       '.why-work-with-us__images',
@@ -169,6 +172,23 @@ describe('WhyWorkWithUs', () => {
       expect(image).toHaveAttribute('alt', '')
       expect(image).toHaveAttribute('draggable', 'false')
     })
+  })
+
+  it('connects animated controls to regions and supports click and keyboard selection', () => {
+    whyAnimation.current.activeIndex = 1
+    whyAnimation.current.isAnimated = true
+    const selectBenefit = whyAnimation.current.scrollToBenefit
+
+    const { container } = render(<WhyWorkWithUs isScrollReady />)
+
+    const buttons = screen.getAllByRole('button')
+    const regions = Array.from(
+      container.querySelectorAll<HTMLElement>(
+        '.why-work-with-us__body[role="region"]',
+      ),
+    )
+    expect(buttons).toHaveLength(4)
+    expect(regions).toHaveLength(4)
 
     buttons.forEach((button, index) => {
       const controlledId = button.getAttribute('aria-controls')
@@ -192,5 +212,40 @@ describe('WhyWorkWithUs', () => {
     fireEvent.keyDown(buttons[3], { key: ' ' })
 
     expect(selectBenefit.mock.calls).toEqual([[2], [0], [3]])
+  })
+})
+
+describe('Footer', () => {
+  it('renders the exact presentational footer content without controls', () => {
+    render(<Footer />)
+
+    expect(screen.getByRole('contentinfo')).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', {
+        level: 2,
+        name: FOOTER_CONTENT.heading,
+      }),
+    ).toBeInTheDocument()
+    expect(screen.getByText(FOOTER_CONTENT.eyebrow)).toBeInTheDocument()
+    expect(screen.getByText(FOOTER_CONTENT.supportingText)).toBeInTheDocument()
+    expect(screen.getByText(FOOTER_CONTENT.identity)).toBeInTheDocument()
+    expect(
+      screen.getByText(`© ${new Date().getFullYear()}`),
+    ).toBeInTheDocument()
+    expect(screen.queryByRole('link')).not.toBeInTheDocument()
+    expect(screen.queryByRole('button')).not.toBeInTheDocument()
+  })
+
+  it('places the footer after main inside the smooth-scroll content', () => {
+    const { container } = render(<App />)
+    const smoothContent = container.querySelector('#smooth-content')
+    const main = smoothContent?.querySelector(':scope > main')
+    const footer = smoothContent?.querySelector(':scope > footer')
+
+    expect(smoothContent).not.toBeNull()
+    expect(main).not.toBeNull()
+    expect(footer).not.toBeNull()
+    expect(main?.contains(footer ?? null)).toBe(false)
+    expect(main?.nextElementSibling).toBe(footer)
   })
 })

@@ -1,27 +1,48 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { RefObject } from 'react'
 import {
   gsap,
   ScrollSmoother,
   ScrollTrigger,
 } from '../lib/gsap'
-import { WHY_WORK_WITH_US_BENEFITS } from '../content/landingPageContent'
+import {
+  WHY_WORK_WITH_US_ANIMATION_QUERY,
+  WHY_WORK_WITH_US_BENEFITS,
+} from '../content/landingPageContent'
 
 type UseWhyWorkWithUsAnimationOptions = Readonly<{
-  enhancedScrollEnabled: boolean
   isScrollReady: boolean
   sectionRef: RefObject<HTMLElement | null>
 }>
 
 export function useWhyWorkWithUsAnimation({
-  enhancedScrollEnabled,
   isScrollReady,
   sectionRef,
 }: UseWhyWorkWithUsAnimationOptions) {
   const timelineRef = useRef<ReturnType<typeof gsap.timeline> | null>(null)
   const scrollTweenRef = useRef<ReturnType<typeof gsap.to> | null>(null)
+  const [isAnimated, setIsAnimated] = useState(() =>
+    window.matchMedia(WHY_WORK_WITH_US_ANIMATION_QUERY).matches,
+  )
   const [activeIndex, setActiveIndex] = useState(0)
-  const isAnimated = enhancedScrollEnabled
+
+  useEffect(() => {
+    const animationQuery = window.matchMedia(
+      WHY_WORK_WITH_US_ANIMATION_QUERY,
+    )
+    const syncAnimationMode = () => {
+      setIsAnimated(animationQuery.matches)
+
+      if (!animationQuery.matches) setActiveIndex(0)
+    }
+
+    syncAnimationMode()
+    animationQuery.addEventListener('change', syncAnimationMode)
+
+    return () => {
+      animationQuery.removeEventListener('change', syncAnimationMode)
+    }
+  }, [])
 
   useLayoutEffect(() => {
     const section = sectionRef.current
@@ -244,9 +265,5 @@ export function useWhyWorkWithUsAnimation({
         })
   }
 
-  return {
-    activeIndex: isAnimated ? activeIndex : 0,
-    isAnimated,
-    scrollToBenefit,
-  }
+  return { activeIndex, isAnimated, scrollToBenefit }
 }

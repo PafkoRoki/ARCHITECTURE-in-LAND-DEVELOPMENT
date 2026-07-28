@@ -1,4 +1,4 @@
-import { useId, useLayoutEffect, useRef } from 'react'
+import { useCallback, useId, useLayoutEffect, useRef, useState } from 'react'
 import { gsap } from '../lib/gsap'
 import './AppLoader.css'
 
@@ -15,29 +15,6 @@ const DURATION = 0.9
  */
 type AppLoaderAnimationProps = {
   onComplete: () => void
-}
-
-type AppLoaderProps = Readonly<{
-  onComplete: () => void
-}>
-
-const SCROLL_LOCK_CLASS = 'app-scroll-locked'
-
-function lockDocumentScroll() {
-  const targets = [document.documentElement, document.body]
-  const existingLocks = targets.map((target) =>
-    target.classList.contains(SCROLL_LOCK_CLASS),
-  )
-
-  targets.forEach((target) => {
-    target.classList.add(SCROLL_LOCK_CLASS)
-  })
-
-  return () => {
-    targets.forEach((target, index) => {
-      if (!existingLocks[index]) target.classList.remove(SCROLL_LOCK_CLASS)
-    })
-  }
 }
 
 function AppLoaderAnimation({ onComplete }: AppLoaderAnimationProps) {
@@ -58,6 +35,10 @@ function AppLoaderAnimation({ onComplete }: AppLoaderAnimationProps) {
     const pointsDelay: number[] = []
     const allPoints: number[][] = []
     const isOpened = false
+    const appRoot = overlay.parentElement
+    const wasInert = appRoot?.hasAttribute('inert') ?? false
+
+    appRoot?.setAttribute('inert', '')
 
     for (let i = 0; i < numPaths; i++) {
       const points: number[] = []
@@ -123,6 +104,7 @@ function AppLoaderAnimation({ onComplete }: AppLoaderAnimationProps) {
 
     return () => {
       context.revert()
+      if (appRoot && !wasInert) appRoot.removeAttribute('inert')
     }
   }, [onComplete])
 
@@ -169,10 +151,13 @@ function AppLoaderAnimation({ onComplete }: AppLoaderAnimationProps) {
   )
 }
 
-function AppLoader({ onComplete }: AppLoaderProps) {
-  useLayoutEffect(() => lockDocumentScroll(), [])
+function AppLoader() {
+  const [isVisible, setIsVisible] = useState(true)
+  const handleComplete = useCallback(() => setIsVisible(false), [])
 
-  return <AppLoaderAnimation onComplete={onComplete} />
+  if (!isVisible) return null
+
+  return <AppLoaderAnimation onComplete={handleComplete} />
 }
 
 export default AppLoader

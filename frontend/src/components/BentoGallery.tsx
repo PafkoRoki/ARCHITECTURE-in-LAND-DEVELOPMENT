@@ -3,7 +3,6 @@ import { GALLERY_IMAGES } from '../content/landingPageContent'
 import { useBentoGalleryAnimation } from '../hooks/useBentoGalleryAnimation'
 
 type BentoGalleryProps = Readonly<{
-  enhancedScrollEnabled: boolean
   isScrollReady: boolean
 }>
 
@@ -12,15 +11,11 @@ type BentoGalleryProps = Readonly<{
  * https://codepen.io/GreenSock/pen/vYMzKZx
  * Public Pen source used under the MIT license.
  */
-export function BentoGallery({
-  enhancedScrollEnabled,
-  isScrollReady,
-}: BentoGalleryProps) {
+export function BentoGallery({ isScrollReady }: BentoGalleryProps) {
   const galleryWrapperRef = useRef<HTMLDivElement>(null)
   const galleryRef = useRef<HTMLDivElement>(null)
 
   useBentoGalleryAnimation({
-    enhancedScrollEnabled,
     galleryRef,
     galleryWrapperRef,
     isScrollReady,

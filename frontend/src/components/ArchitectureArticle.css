@@ -1,7 +1,7 @@
 .gallery-copy {
   color: #000000;
-  background-color: #ffffff;
-  padding: 2rem clamp(1.25rem, 6vw, 5rem) clamp(6rem, 10vw, 10rem);
+  background-color: var(--color-background);
+  padding: 2rem 5rem clamp(6rem, 10vw, 10rem);
 }
 
 .gallery-copy h2 {
@@ -12,23 +12,9 @@
   letter-spacing: -0.055em;
 }
 
-.gallery-copy .typing-heading,
-.gallery-copy .typing-heading__layout-copy,
-.gallery-copy .typing-heading__static,
-.gallery-copy .typing-heading__animated {
-  min-width: 0;
-  max-width: 100%;
-}
-
 .gallery-copy p {
   margin-bottom: 1rem;
   font-size: var(--type-body-size);
   line-height: var(--type-body-leading);
   letter-spacing: var(--type-body-tracking);
-}
-
-@media (max-width: 479px) {
-  .gallery-copy h2 {
-    font-size: clamp(2.25rem, 12vw, 3.5rem);
-  }
 }

@@ -1,9 +1,8 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import { gsap, ScrollSmoother, ScrollTrigger } from '../lib/gsap'
-import {
-  ENHANCED_SCROLL_QUERY,
-  REDUCED_MOTION_QUERY,
-} from '../lib/responsiveMotion'
+
+const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
+const SMOOTH_MOTION_QUERY = '(prefers-reduced-motion: no-preference)'
 
 type InitialScrollStyles = Readonly<{
   documentElement: string
@@ -12,20 +11,13 @@ type InitialScrollStyles = Readonly<{
   content: string
 }>
 
-type UseSmoothScrollOptions = Readonly<{
-  enabled: boolean
-}>
-
-export function useSmoothScroll({ enabled }: UseSmoothScrollOptions) {
+export function useSmoothScroll() {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const initialScrollStylesRef = useRef<InitialScrollStyles>(null)
   const [isScrollReady, setIsScrollReady] = useState(false)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(() =>
     window.matchMedia(REDUCED_MOTION_QUERY).matches,
-  )
-  const [enhancedScrollEnabled, setEnhancedScrollEnabled] = useState(() =>
-    window.matchMedia(ENHANCED_SCROLL_QUERY).matches,
   )
 
   useLayoutEffect(() => {
@@ -41,29 +33,16 @@ export function useSmoothScroll({ enabled }: UseSmoothScrollOptions) {
       content: content.style.cssText,
     }
 
-    const restoreInitialStyles = () => {
-      const styles = initialScrollStylesRef.current
-
-      if (!styles) return
-
-      document.documentElement.style.cssText = styles.documentElement
-      document.body.style.cssText = styles.body
-      wrapper.style.cssText = styles.wrapper
-      content.style.cssText = styles.content
-    }
-
     const media = gsap.matchMedia()
     media.add(
       {
-        all: 'all',
         reduced: REDUCED_MOTION_QUERY,
-        enhanced: ENHANCED_SCROLL_QUERY,
+        smooth: SMOOTH_MOTION_QUERY,
       },
       (context) => {
         setPrefersReducedMotion(Boolean(context.conditions?.reduced))
-        setEnhancedScrollEnabled(Boolean(context.conditions?.enhanced))
 
-        if (!enabled || !context.conditions?.enhanced) return
+        if (!context.conditions?.smooth) return
 
         const smoother = ScrollSmoother.create({
           wrapper,
@@ -72,27 +51,19 @@ export function useSmoothScroll({ enabled }: UseSmoothScrollOptions) {
           smoothTouch: 0,
         })
 
-        return () => {
-          smoother.kill()
-          restoreInitialStyles()
-        }
+        return () => smoother.kill()
       },
     )
 
-    if (!enabled) {
-      restoreInitialStyles()
-    }
-
     const contentFrame = window.requestAnimationFrame(() => {
-      setIsScrollReady(enabled)
+      setIsScrollReady(true)
     })
 
     return () => {
       window.cancelAnimationFrame(contentFrame)
       media.revert()
-      restoreInitialStyles()
     }
-  }, [enabled])
+  }, [])
 
   useLayoutEffect(() => {
     const styles = initialScrollStylesRef.current
@@ -101,7 +72,7 @@ export function useSmoothScroll({ enabled }: UseSmoothScrollOptions) {
 
     if (
       !isScrollReady ||
-      enhancedScrollEnabled ||
+      !prefersReducedMotion ||
       !styles ||
       !wrapper ||
       !content
@@ -113,18 +84,8 @@ export function useSmoothScroll({ enabled }: UseSmoothScrollOptions) {
     document.body.style.cssText = styles.body
     wrapper.style.cssText = styles.wrapper
     content.style.cssText = styles.content
-    const refreshFrame = window.requestAnimationFrame(() => {
-      ScrollTrigger.refresh()
-    })
+    ScrollTrigger.refresh()
+  }, [isScrollReady, prefersReducedMotion])
 
-    return () => window.cancelAnimationFrame(refreshFrame)
-  }, [enhancedScrollEnabled, isScrollReady])
-
-  return {
-    wrapperRef,
-    contentRef,
-    enhancedScrollEnabled,
-    isScrollReady,
-    prefersReducedMotion,
-  }
+  return { wrapperRef, contentRef, isScrollReady, prefersReducedMotion }
 }
