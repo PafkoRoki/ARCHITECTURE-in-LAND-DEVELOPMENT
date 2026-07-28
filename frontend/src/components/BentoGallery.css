@@ -17,9 +17,7 @@
   --gallery-expanded-height: calc(
     100svh - var(--gallery-edge-inset) - var(--gallery-edge-inset)
   );
-  --gallery-expanded-width: calc(
-    100% - var(--gallery-edge-inset) - var(--gallery-edge-inset)
-  );
+  --gallery-expanded-width: 100%;
   --gallery-gap: var(--gallery-edge-inset);
 
   position: relative;
