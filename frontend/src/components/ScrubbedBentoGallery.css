@@ -1,9 +1,13 @@
 .hero,
 .gallery-wrap,
+.gallery-copy,
 .why-work-with-us,
 .our-process,
 .contact-section,
 .site-footer {
   --card-radius: clamp(16px, 2vw, 28px);
   --card-spacing: clamp(12px, 1.5vw, 24px);
+  --section-spacing: clamp(6rem, 10vw, 12rem);
+  --content-section-width: 96rem;
+  --article-width: 80rem;
 }

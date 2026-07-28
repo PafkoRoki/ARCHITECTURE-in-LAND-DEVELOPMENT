@@ -11,14 +11,14 @@
   --timeline-marker-size: clamp(3rem, 4vw, 4rem);
 
   width: 100%;
-  padding: var(--card-spacing);
+  padding: var(--section-spacing) var(--card-spacing);
   color: #000000;
   background-color: var(--color-background);
 }
 
 .our-process__wrapper {
   width: 100%;
-  max-width: 120rem;
+  max-width: var(--content-section-width);
   margin: 0 auto;
   overflow: clip;
   background-color: var(--color-background);
@@ -87,7 +87,7 @@
 
 .timeline__title {
   margin: 0;
-  color: #ff8709;
+  color: #000000;
   font-size: var(--type-feature-title-size);
   font-weight: 400;
   line-height: var(--type-title-leading);

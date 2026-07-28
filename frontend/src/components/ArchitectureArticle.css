@@ -1,10 +1,15 @@
 .gallery-copy {
+  box-sizing: border-box;
+  width: calc(100% - (2 * var(--card-spacing)));
+  max-width: var(--article-width);
+  margin: 0 auto;
   color: #000000;
   background-color: var(--color-background);
-  padding: 2rem 5rem clamp(6rem, 10vw, 10rem);
+  padding: var(--section-spacing) clamp(1.5rem, 5vw, 5rem);
 }
 
 .gallery-copy h2 {
+  margin: 0 0 clamp(2.5rem, 5vw, 5rem);
   color: #ff8709;
   font-size: var(--type-display-size);
   font-weight: 600;
@@ -13,8 +18,13 @@
 }
 
 .gallery-copy p {
-  margin-bottom: 1rem;
+  max-width: 62rem;
+  margin: 0 0 1rem;
   font-size: var(--type-body-size);
   line-height: var(--type-body-leading);
   letter-spacing: var(--type-body-tracking);
+}
+
+.gallery-copy p:last-child {
+  margin-bottom: 0;
 }
