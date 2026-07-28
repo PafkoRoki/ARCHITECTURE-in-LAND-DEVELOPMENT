@@ -86,9 +86,13 @@ describe('landing page content', () => {
     const gallery = main?.querySelector(':scope > .gallery-wrap')
 
     expect(
-      screen.getByRole('heading', { level: 1, name: 'Land, considered.' }),
+      screen.getByRole('heading', {
+        level: 1,
+        name: 'Architecture in Land Development',
+      }),
     ).toBeInTheDocument()
-    expect(hero).toHaveTextContent('Architecture in Land Development')
+    expect(hero).toHaveTextContent('Poznań, 2026')
+    expect(hero).not.toHaveTextContent('PL — 2026')
     expect(hero).not.toBeNull()
     expect(hero?.nextElementSibling).toBe(gallery)
   })

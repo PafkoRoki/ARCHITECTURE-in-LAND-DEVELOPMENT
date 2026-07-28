@@ -29,7 +29,7 @@
 .site-footer__identity {
   margin: 0;
   color: #ff8709;
-  font-size: clamp(0.625rem, 0.8vw, 0.75rem);
+  font-size: var(--type-micro-size);
   line-height: var(--type-label-leading);
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -39,7 +39,7 @@
   max-width: 12ch;
   margin: 1rem 0 0;
   color: #ffffff;
-  font-size: clamp(2rem, 3.5vw, 3.75rem);
+  font-size: var(--type-heading-size);
   font-weight: 500;
   line-height: 1;
   letter-spacing: -0.045em;
@@ -57,7 +57,7 @@
 
 .site-footer__business-detail dt {
   color: #727272;
-  font-size: clamp(0.625rem, 0.8vw, 0.75rem);
+  font-size: var(--type-micro-size);
   line-height: var(--type-label-leading);
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -100,10 +100,6 @@
     display: block;
     padding-right: var(--card-spacing);
     padding-left: var(--card-spacing);
-  }
-
-  .site-footer__heading {
-    font-size: clamp(2rem, 10vw, 2.75rem);
   }
 
   .site-footer__business-details {

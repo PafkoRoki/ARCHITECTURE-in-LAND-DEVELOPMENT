@@ -2,6 +2,7 @@
 .gallery-wrap,
 .why-work-with-us,
 .our-process,
+.contact-section,
 .site-footer {
   --card-radius: clamp(16px, 2vw, 28px);
   --card-spacing: clamp(12px, 1.5vw, 24px);

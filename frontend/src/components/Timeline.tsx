@@ -51,7 +51,10 @@ export function Timeline({ data, isScrollReady }: TimelineProps) {
     if (!list) return
 
     const updateHeight = () => {
-      setHeight(list.getBoundingClientRect().height)
+      const nextHeight = list.getBoundingClientRect().height
+      setHeight((currentHeight) =>
+        currentHeight === nextHeight ? currentHeight : nextHeight,
+      )
     }
 
     updateHeight()
@@ -73,7 +76,7 @@ export function Timeline({ data, isScrollReady }: TimelineProps) {
       data-timeline-animated={isAnimated ? 'true' : 'false'}
     >
       <div className="timeline__body">
-        <ol ref={listRef} className="timeline__list">
+        <ol ref={listRef} className="timeline__list" role="list">
           {data.map((entry) => (
             <li className="timeline__item" key={entry.id}>
               <div className="timeline__sticky">

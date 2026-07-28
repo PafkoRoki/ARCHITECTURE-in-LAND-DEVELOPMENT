@@ -1,5 +1,6 @@
 import { ArchitectureArticle } from './ArchitectureArticle'
 import { BentoGallery } from './BentoGallery'
+import { ContactSection } from './ContactSection'
 import { Footer } from './Footer'
 import { Hero } from './Hero'
 import { OurProcess } from './OurProcess'
@@ -10,6 +11,7 @@ import './BentoGallery.css'
 import './ArchitectureArticle.css'
 import './WhyWorkWithUs.css'
 import './OurProcess.css'
+import './ContactSection.css'
 import './Footer.css'
 
 type ScrollReadyProps = Readonly<{
@@ -25,6 +27,7 @@ function ScrubbedBentoGallery({ isScrollReady }: ScrollReadyProps) {
         <ArchitectureArticle />
         <WhyWorkWithUs isScrollReady={isScrollReady} />
         <OurProcess isScrollReady={isScrollReady} />
+        <ContactSection />
       </main>
       <Footer />
     </>

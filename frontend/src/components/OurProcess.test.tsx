@@ -1,9 +1,8 @@
-import { render, screen, within } from '@testing-library/react'
+import { act, render, screen, within } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   PROCESS_CONTENT,
   PROCESS_HEADING,
-  PROCESS_INTRO,
 } from '../content/landingPageContent'
 import { OurProcess } from './OurProcess'
 import ScrubbedBentoGallery from './ScrubbedBentoGallery'
@@ -71,6 +70,15 @@ vi.mock('../hooks/useWhyWorkWithUsAnimation', () => ({
   }),
 }))
 
+vi.mock('./ContactSection', async () => {
+  const React = await import('react')
+
+  return {
+    ContactSection: () =>
+      React.createElement('section', { className: 'contact-section' }),
+  }
+})
+
 const EXPECTED_STEPS = [
   {
     number: '01',
@@ -113,11 +121,16 @@ const resizeObserverMocks = {
   disconnect: vi.fn<() => void>(),
   observe: vi.fn<(target: Element) => void>(),
 }
+let measuredHeight = 640
+let resizeObserverCallback: ResizeObserverCallback | undefined
 
 const assetName = (source: string) =>
   source.split('/').at(-1)?.split('?')[0]
 
 beforeEach(() => {
+  motionMocks.useReducedMotion.mockClear()
+  motionMocks.useScroll.mockClear()
+  motionMocks.useTransform.mockClear()
   motionMocks.prefersReducedMotion = false
   motionMocks.useReducedMotion.mockImplementation(
     () => motionMocks.prefersReducedMotion,
@@ -134,8 +147,14 @@ beforeEach(() => {
 
   resizeObserverMocks.disconnect.mockClear()
   resizeObserverMocks.observe.mockClear()
+  measuredHeight = 640
+  resizeObserverCallback = undefined
 
   class ResizeObserverMock {
+    constructor(callback: ResizeObserverCallback) {
+      resizeObserverCallback = callback
+    }
+
     disconnect() {
       resizeObserverMocks.disconnect()
     }
@@ -148,17 +167,19 @@ beforeEach(() => {
   }
 
   vi.stubGlobal('ResizeObserver', ResizeObserverMock)
-  vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({
-    bottom: 640,
-    height: 640,
-    left: 0,
-    right: 1200,
-    top: 0,
-    width: 1200,
-    x: 0,
-    y: 0,
-    toJSON: () => ({}),
-  })
+  vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(
+    () => ({
+      bottom: measuredHeight,
+      height: measuredHeight,
+      left: 0,
+      right: 1200,
+      top: 0,
+      width: 1200,
+      x: 0,
+      y: 0,
+      toJSON: () => ({}),
+    }),
+  )
 })
 
 afterEach(() => {
@@ -170,7 +191,6 @@ describe('OurProcess content and semantics', () => {
   it('keeps the exact five-step Polish content and local image order', () => {
     expect({
       heading: PROCESS_CONTENT.heading,
-      intro: PROCESS_CONTENT.intro,
       steps: PROCESS_CONTENT.steps.map((step) => ({
         number: step.number,
         title: step.title,
@@ -179,8 +199,6 @@ describe('OurProcess content and semantics', () => {
       })),
     }).toEqual({
       heading: 'Nasz proces',
-      intro:
-        'Od pierwszej rozmowy po realizację — prowadzimy projekt jasno, etap po etapie.',
       steps: EXPECTED_STEPS,
     })
   })
@@ -206,7 +224,11 @@ describe('OurProcess content and semantics', () => {
     )
 
     expect(section).toHaveAttribute('aria-labelledby', heading.id)
-    expect(within(section).getByText(PROCESS_INTRO)).toBeInTheDocument()
+    expect(
+      within(section).queryByText(
+        'Od pierwszej rozmowy po realizację — prowadzimy projekt jasno, etap po etapie.',
+      ),
+    ).not.toBeInTheDocument()
     expect(items).toHaveLength(5)
     expect(titles.map((title) => title.textContent)).toEqual(
       EXPECTED_STEPS.map((step) => step.title),
@@ -242,6 +264,8 @@ describe('OurProcess timeline states', () => {
 
     expect(timeline).toHaveAttribute('data-timeline-animated', 'false')
     expect(progress).toHaveStyle({ height: '640px', opacity: '1' })
+    expect(motionMocks.useScroll).not.toHaveBeenCalled()
+    expect(motionMocks.useTransform).not.toHaveBeenCalled()
   })
 
   it('uses document-scroll transforms when scrolling is ready', () => {
@@ -285,6 +309,8 @@ describe('OurProcess timeline states', () => {
 
     expect(timeline).toHaveAttribute('data-timeline-animated', 'false')
     expect(progress).toHaveStyle({ height: '640px', opacity: '1' })
+    expect(motionMocks.useScroll).not.toHaveBeenCalled()
+    expect(motionMocks.useTransform).not.toHaveBeenCalled()
   })
 
   it('observes the ordered list for size changes and disconnects on cleanup', () => {
@@ -296,6 +322,15 @@ describe('OurProcess timeline states', () => {
     expect(resizeObserverMocks.observe).toHaveBeenCalledOnce()
     expect(resizeObserverMocks.observe).toHaveBeenCalledWith(list)
 
+    act(() => {
+      measuredHeight = 720
+      resizeObserverCallback?.([], {} as ResizeObserver)
+    })
+
+    expect(
+      container.querySelector('[data-timeline-progress]'),
+    ).toHaveStyle({ height: '720px' })
+
     unmount()
 
     expect(resizeObserverMocks.disconnect).toHaveBeenCalledOnce()
@@ -303,18 +338,20 @@ describe('OurProcess timeline states', () => {
 })
 
 describe('OurProcess page placement', () => {
-  it('places the process after WhyWorkWithUs and before the footer', () => {
+  it('places the process after WhyWorkWithUs and the contact section before the footer', () => {
     const { container } = render(
       <ScrubbedBentoGallery isScrollReady={false} />,
     )
     const main = container.querySelector('main')
     const whyWorkWithUs = main?.querySelector('.why-work-with-us')
     const process = main?.querySelector('.our-process')
+    const contact = main?.querySelector('.contact-section')
     const footer = container.querySelector('footer')
 
     expect(main).not.toBeNull()
     expect(whyWorkWithUs?.nextElementSibling).toBe(process)
-    expect(main?.lastElementChild).toBe(process)
+    expect(process?.nextElementSibling).toBe(contact)
+    expect(main?.lastElementChild).toBe(contact)
     expect(main?.nextElementSibling).toBe(footer)
   })
 })

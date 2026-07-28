@@ -1,24 +1,32 @@
 @import url('https://fonts.googleapis.com/css2?family=TASA+Orbiter:wght@400..800&display=swap');
 
 :root {
-  font-family: 'TASA Orbiter', sans-serif;
+  --font-family-brand: 'TASA Orbiter', sans-serif;
   --color-background: #f4f4f2;
-  --type-display-size: 3rem;
+  --type-display-size: clamp(3.5rem, 5vw, 4.5rem);
+  --type-heading-size: clamp(2rem, 3.5vw, 3.75rem);
+  --type-feature-title-size: clamp(1.5rem, 2.5vw, 3rem);
+  --type-card-title-size: clamp(1.5rem, 2.5vw, 2rem);
   --type-title-size: 1.5rem;
+  --type-lead-size: clamp(1.125rem, 2vw, 1.5rem);
+  --type-body-large-size: clamp(1rem, 1.45vw, 1.25rem);
   --type-body-size: 1rem;
   --type-label-size: 1rem;
+  --type-micro-size: clamp(0.625rem, 0.8vw, 0.75rem);
   --type-display-leading: 1.2;
   --type-title-leading: 1.2;
   --type-body-leading: 1.4;
   --type-label-leading: 1.25;
   --type-display-tracking: -0.02em;
   --type-body-tracking: 0.01em;
+  font-family: var(--font-family-brand);
+  font-synthesis: none;
 }
 
 body {
   color: #000000;
   background-color: var(--color-background);
-  font-family: inherit;
+  font-family: var(--font-family-brand);
   font-size: var(--type-body-size);
   font-weight: 400;
   line-height: var(--type-body-leading);
@@ -29,7 +37,10 @@ button,
 input,
 select,
 textarea {
-  font: inherit;
+  font-family: var(--font-family-brand);
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
 }
 
 h1,
@@ -57,15 +68,23 @@ p {
   letter-spacing: var(--type-body-tracking);
 }
 
+@media (max-width: 991px) {
+  :root {
+    --type-display-size: clamp(2.75rem, 6vw, 3.75rem);
+  }
+}
+
 @media (max-width: 767px) {
   :root {
     --type-display-size: 2.25rem;
+    --type-feature-title-size: clamp(1.5rem, 6vw, 2.25rem);
   }
 }
 
 @media (max-width: 479px) {
   :root {
     --type-display-size: 1.75rem;
+    --type-heading-size: clamp(2rem, 10vw, 2.75rem);
     --type-title-size: 1rem;
     --type-body-size: 0.875rem;
     --type-label-size: 0.75rem;
