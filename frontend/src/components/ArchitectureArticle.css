@@ -1,7 +1,7 @@
 .gallery-copy {
   box-sizing: border-box;
   width: calc(100% - (2 * var(--card-spacing)));
-  max-width: var(--article-width);
+  max-width: var(--narrow-section-width);
   margin: 0 auto;
   color: #000000;
   background-color: var(--color-background);

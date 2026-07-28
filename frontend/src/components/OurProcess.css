@@ -18,7 +18,7 @@
 
 .our-process__wrapper {
   width: 100%;
-  max-width: var(--content-section-width);
+  max-width: var(--narrow-section-width);
   margin: 0 auto;
   overflow: clip;
   background-color: var(--color-background);
