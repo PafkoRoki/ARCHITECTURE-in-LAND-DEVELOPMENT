@@ -86,9 +86,13 @@ describe('landing page content', () => {
     const gallery = main?.querySelector(':scope > .gallery-wrap')
 
     expect(
-      screen.getByRole('heading', { level: 1, name: 'Land, considered.' }),
+      screen.getByRole('heading', {
+        level: 1,
+        name: 'Architecture in Land Development',
+      }),
     ).toBeInTheDocument()
-    expect(hero).toHaveTextContent('Architecture in Land Development')
+    expect(hero).toHaveTextContent('Poznań, 2026')
+    expect(hero).not.toHaveTextContent('PL — 2026')
     expect(hero).not.toBeNull()
     expect(hero?.nextElementSibling).toBe(gallery)
   })
@@ -103,11 +107,13 @@ describe('landing page content', () => {
       WHY_WORK_WITH_US_BENEFITS.map(({ number, title }) => [number, title]),
     ).toEqual(expectedBenefits)
     expect(FOOTER_CONTENT).toEqual({
-      eyebrow: 'ARCHITECTURE / LAND / COMMUNITY',
       heading: 'From land to lasting places.',
-      supportingText:
-        'A framework for buildings, landscapes, and communities to mature together.',
       identity: 'Architecture in Land Development',
+      businessDetails: [
+        { label: 'NIP', value: '—' },
+        { label: 'Address', value: '—' },
+        { label: 'Contact', value: '—' },
+      ],
     })
   })
 
@@ -226,9 +232,11 @@ describe('Footer', () => {
         name: FOOTER_CONTENT.heading,
       }),
     ).toBeInTheDocument()
-    expect(screen.getByText(FOOTER_CONTENT.eyebrow)).toBeInTheDocument()
-    expect(screen.getByText(FOOTER_CONTENT.supportingText)).toBeInTheDocument()
     expect(screen.getByText(FOOTER_CONTENT.identity)).toBeInTheDocument()
+    FOOTER_CONTENT.businessDetails.forEach(({ label }) => {
+      expect(screen.getByText(label)).toBeInTheDocument()
+    })
+    expect(screen.getAllByText('—')).toHaveLength(3)
     expect(
       screen.getByText(`© ${new Date().getFullYear()}`),
     ).toBeInTheDocument()

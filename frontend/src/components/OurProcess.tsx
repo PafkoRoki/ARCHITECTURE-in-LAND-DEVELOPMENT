@@ -1,7 +1,6 @@
 import { useId } from 'react'
 import {
   PROCESS_HEADING,
-  PROCESS_INTRO,
   PROCESS_STEPS,
 } from '../content/landingPageContent'
 import { Timeline } from './Timeline'
@@ -49,7 +48,6 @@ export function OurProcess({ isScrollReady }: OurProcessProps) {
           >
             <TypingHeading text={PROCESS_HEADING} />
           </h2>
-          <p className="our-process__intro">{PROCESS_INTRO}</p>
         </header>
 
         <Timeline

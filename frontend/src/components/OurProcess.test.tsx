@@ -3,7 +3,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   PROCESS_CONTENT,
   PROCESS_HEADING,
-  PROCESS_INTRO,
 } from '../content/landingPageContent'
 import { OurProcess } from './OurProcess'
 import ScrubbedBentoGallery from './ScrubbedBentoGallery'
@@ -70,6 +69,15 @@ vi.mock('../hooks/useWhyWorkWithUsAnimation', () => ({
     scrollToBenefit: vi.fn(),
   }),
 }))
+
+vi.mock('./ContactSection', async () => {
+  const React = await import('react')
+
+  return {
+    ContactSection: () =>
+      React.createElement('section', { className: 'contact-section' }),
+  }
+})
 
 const EXPECTED_STEPS = [
   {
@@ -183,7 +191,6 @@ describe('OurProcess content and semantics', () => {
   it('keeps the exact five-step Polish content and local image order', () => {
     expect({
       heading: PROCESS_CONTENT.heading,
-      intro: PROCESS_CONTENT.intro,
       steps: PROCESS_CONTENT.steps.map((step) => ({
         number: step.number,
         title: step.title,
@@ -192,8 +199,6 @@ describe('OurProcess content and semantics', () => {
       })),
     }).toEqual({
       heading: 'Nasz proces',
-      intro:
-        'Od pierwszej rozmowy po realizację — prowadzimy projekt jasno, etap po etapie.',
       steps: EXPECTED_STEPS,
     })
   })
@@ -219,7 +224,11 @@ describe('OurProcess content and semantics', () => {
     )
 
     expect(section).toHaveAttribute('aria-labelledby', heading.id)
-    expect(within(section).getByText(PROCESS_INTRO)).toBeInTheDocument()
+    expect(
+      within(section).queryByText(
+        'Od pierwszej rozmowy po realizację — prowadzimy projekt jasno, etap po etapie.',
+      ),
+    ).not.toBeInTheDocument()
     expect(items).toHaveLength(5)
     expect(titles.map((title) => title.textContent)).toEqual(
       EXPECTED_STEPS.map((step) => step.title),
@@ -329,18 +338,20 @@ describe('OurProcess timeline states', () => {
 })
 
 describe('OurProcess page placement', () => {
-  it('places the process after WhyWorkWithUs and before the footer', () => {
+  it('places the process after WhyWorkWithUs and the contact section before the footer', () => {
     const { container } = render(
       <ScrubbedBentoGallery isScrollReady={false} />,
     )
     const main = container.querySelector('main')
     const whyWorkWithUs = main?.querySelector('.why-work-with-us')
     const process = main?.querySelector('.our-process')
+    const contact = main?.querySelector('.contact-section')
     const footer = container.querySelector('footer')
 
     expect(main).not.toBeNull()
     expect(whyWorkWithUs?.nextElementSibling).toBe(process)
-    expect(main?.lastElementChild).toBe(process)
+    expect(process?.nextElementSibling).toBe(contact)
+    expect(main?.lastElementChild).toBe(contact)
     expect(main?.nextElementSibling).toBe(footer)
   })
 })

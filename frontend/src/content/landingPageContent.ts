@@ -99,6 +99,60 @@ export const [WHY_WORK_WITH_US_HEADING, WHY_WORK_WITH_US_BENEFITS] =
 export const WHY_WORK_WITH_US_ANIMATION_QUERY =
   '(min-width: 480px) and (prefers-reduced-motion: no-preference)'
 
+export type ContactContent = Readonly<{
+  heading: string
+  supportingText: string
+  emailLabel: string
+  projectLabel: string
+  submitLabel: string
+  sampleLabel: string
+}>
+
+export type ContactTestimonial = Readonly<{
+  quote: string
+  name: string
+  designation: string
+  src: string
+}>
+
+export const CONTACT_CONTENT = {
+  heading: 'Start a project',
+  supportingText:
+    'Tell us what you have in mind. We’ll get back to you with the next steps.',
+  emailLabel: 'Email address.',
+  projectLabel: 'What would you like to create?',
+  submitLabel: 'Send inquiry',
+  sampleLabel: 'Opinie',
+} as const satisfies ContactContent
+
+export const CONTACT_TESTIMONIALS = [
+  {
+    quote:
+      'The team turned a complex site into a clear visual story that made early decisions easier for everyone involved.',
+    name: 'Property developer',
+    designation: 'Illustrative testimonial',
+    src: poznanImage,
+  },
+  {
+    quote:
+      'The process was clear from the first brief, and the final images captured both the architecture and the atmosphere.',
+    name: 'Architecture studio',
+    designation: 'Illustrative testimonial',
+    src: architectsImage,
+  },
+  {
+    quote:
+      'Their architectural perspective brought precision, credibility, and a strong sense of place to every visualization.',
+    name: 'Design team',
+    designation: 'Illustrative testimonial',
+    src: visualizationImage,
+  },
+] as const satisfies readonly [
+  ContactTestimonial,
+  ContactTestimonial,
+  ContactTestimonial,
+]
+
 export type ProcessStep = Readonly<{
   number: string
   title: string
@@ -108,7 +162,6 @@ export type ProcessStep = Readonly<{
 
 export type ProcessContent = Readonly<{
   heading: string
-  intro: string
   steps: readonly [
     ProcessStep,
     ProcessStep,
@@ -120,8 +173,6 @@ export type ProcessContent = Readonly<{
 
 export const PROCESS_CONTENT = {
   heading: 'Nasz proces',
-  intro:
-    'Od pierwszej rozmowy po realizację — prowadzimy projekt jasno, etap po etapie.',
   steps: [
     {
       number: '01',
@@ -163,21 +214,30 @@ export const PROCESS_CONTENT = {
 
 export const {
   heading: PROCESS_HEADING,
-  intro: PROCESS_INTRO,
   steps: PROCESS_STEPS,
 } = PROCESS_CONTENT
 
+export type FooterBusinessDetail = Readonly<{
+  label: string
+  value: string
+}>
+
 export type FooterContent = Readonly<{
-  eyebrow: string
   heading: string
-  supportingText: string
   identity: string
+  businessDetails: readonly [
+    FooterBusinessDetail,
+    FooterBusinessDetail,
+    FooterBusinessDetail,
+  ]
 }>
 
 export const FOOTER_CONTENT = {
-  eyebrow: 'ARCHITECTURE / LAND / COMMUNITY',
   heading: 'From land to lasting places.',
-  supportingText:
-    'A framework for buildings, landscapes, and communities to mature together.',
   identity: 'Architecture in Land Development',
+  businessDetails: [
+    { label: 'NIP', value: '—' },
+    { label: 'Address', value: '—' },
+    { label: 'Contact', value: '—' },
+  ],
 } as const satisfies FooterContent
