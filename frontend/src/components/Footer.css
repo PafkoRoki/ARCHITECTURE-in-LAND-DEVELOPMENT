@@ -16,7 +16,7 @@
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--card-spacing);
   width: 100%;
-  max-width: var(--section-max-width);
+  max-width: 120rem;
   margin: 0 auto;
   padding: clamp(2rem, 3.5vw, 3.5rem) clamp(1.5rem, 4vw, 4rem)
     calc(clamp(2rem, 3.5vw, 3.5rem) + env(safe-area-inset-bottom));

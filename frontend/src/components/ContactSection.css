@@ -8,8 +8,7 @@
 .contact-section {
   width: 100%;
   min-height: 100svh;
-  padding: var(--card-spacing, clamp(12px, 1.5vw, 24px))
-    var(--section-inline-gutter);
+  padding: var(--card-spacing, clamp(12px, 1.5vw, 24px));
   color: #000000;
   background-color: var(--color-background);
 }
@@ -19,7 +18,7 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--card-spacing, clamp(12px, 1.5vw, 24px));
   width: 100%;
-  max-width: var(--section-max-width);
+  max-width: 120rem;
   min-height: calc(
     100svh - var(--card-spacing, clamp(12px, 1.5vw, 24px)) -
       var(--card-spacing, clamp(12px, 1.5vw, 24px))

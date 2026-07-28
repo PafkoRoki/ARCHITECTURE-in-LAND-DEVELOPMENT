@@ -11,14 +11,14 @@
   --timeline-marker-size: clamp(3rem, 4vw, 4rem);
 
   width: 100%;
-  padding: var(--card-spacing) var(--section-inline-gutter);
+  padding: var(--card-spacing);
   color: #000000;
   background-color: var(--color-background);
 }
 
 .our-process__wrapper {
   width: 100%;
-  max-width: var(--section-max-width);
+  max-width: 120rem;
   margin: 0 auto;
   overflow: clip;
   background-color: var(--color-background);

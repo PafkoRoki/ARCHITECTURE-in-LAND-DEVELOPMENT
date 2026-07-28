@@ -7,12 +7,3 @@
   --card-radius: clamp(16px, 2vw, 28px);
   --card-spacing: clamp(12px, 1.5vw, 24px);
 }
-
-.gallery-wrap,
-.gallery-copy,
-.why-work-with-us,
-.our-process,
-.contact-section,
-.site-footer {
-  margin-top: var(--section-gap);
-}
