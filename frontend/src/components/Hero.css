@@ -4,6 +4,7 @@
   grid-template-rows: auto 1fr;
   height: 50svh;
   padding: var(--card-spacing);
+  padding-bottom: 0;
 }
 
 .hero__meta {
@@ -21,9 +22,10 @@
 .hero__title {
   align-self: end;
   margin: 0;
-  color: #ff8709;
+  color: #000000;
   font-size: var(--type-display-size);
   font-weight: 600;
   line-height: var(--type-display-leading);
   letter-spacing: -0.055em;
+  transform: translateY(0.26em);
 }

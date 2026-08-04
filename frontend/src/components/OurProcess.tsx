@@ -19,9 +19,12 @@ const PROCESS_TIMELINE_DATA: readonly TimelineEntry[] = PROCESS_STEPS.map(
     content: (
       <div className="our-process__entry">
         <p className="our-process__description">{step.description}</p>
-        <div className="our-process__image-frame" aria-hidden="true">
+        <div
+          className={`our-process__image-frame our-process__image-frame--${step.imagePresentation}`}
+          aria-hidden="true"
+        >
           <img
-            className="our-process__image"
+            className={`our-process__image our-process__image--${step.imagePresentation}`}
             src={step.image}
             alt=""
             loading="lazy"

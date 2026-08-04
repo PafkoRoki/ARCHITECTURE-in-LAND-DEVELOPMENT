@@ -85,35 +85,40 @@ const EXPECTED_STEPS = [
     title: 'Poznanie potrzeb',
     description:
       'Zaczynamy od rozmowy, analizy działki lub inwestycji oraz ustalenia budżetu, priorytetów i oczekiwań.',
-    image: 'houses.png',
+    image: 'process-01.webp',
+    imagePresentation: 'diagram',
   },
   {
     number: '02',
     title: 'Koncepcja',
     description:
       'Tworzymy pierwsze szkice i układ funkcjonalny, ustalając skalę, kierunek i najważniejsze założenia projektu.',
-    image: 'city.png',
+    image: 'process-02.webp',
+    imagePresentation: 'diagram',
   },
   {
     number: '03',
     title: 'Dopracowanie koncepcji',
     description:
       'Rozwijamy wybrany wariant w modelu 3D, dopracowujemy bryłę, układ i materiały oraz przygotowujemy wizualizacje.',
-    image: 'visualization.jpg',
+    image: 'process-03.webp',
+    imagePresentation: 'diagram',
   },
   {
     number: '04',
     title: 'Projekt architektoniczno-budowlany',
     description:
       'Przekładamy koncepcję na kompletne rozwiązania projektowe, przygotowujemy dokumentację i koordynujemy uzgodnienia branżowe.',
-    image: 'house.jpg',
+    image: 'process-04.webp',
+    imagePresentation: 'diagram',
   },
   {
     number: '05',
     title: 'Dokumentacja i nadzór',
     description:
       'Przygotowujemy materiały do pozwolenia na budowę i wspieramy proces realizacji na etapie budowy.',
-    image: 'architects.jpg',
+    image: 'process-05.webp',
+    imagePresentation: 'photo',
   },
 ] as const
 
@@ -196,6 +201,7 @@ describe('OurProcess content and semantics', () => {
         title: step.title,
         description: step.description,
         image: assetName(step.image),
+        imagePresentation: step.imagePresentation,
       })),
     }).toEqual({
       heading: 'Nasz proces',
@@ -245,12 +251,20 @@ describe('OurProcess content and semantics', () => {
     expect(images.map((image) => assetName(image.src))).toEqual(
       EXPECTED_STEPS.map((step) => step.image),
     )
-    images.forEach((image) => {
+    images.forEach((image, index) => {
+      const { imagePresentation } = EXPECTED_STEPS[index]
+
       expect(image).toHaveAttribute('alt', '')
       expect(image).toHaveAttribute('loading', 'lazy')
       expect(image).toHaveAttribute('decoding', 'async')
       expect(image).toHaveAttribute('draggable', 'false')
+      expect(image).toHaveClass(
+        `our-process__image--${imagePresentation}`,
+      )
       expect(image.parentElement).toHaveAttribute('aria-hidden', 'true')
+      expect(image.parentElement).toHaveClass(
+        `our-process__image-frame--${imagePresentation}`,
+      )
     })
     expect(container.querySelectorAll('ol.timeline__list')).toHaveLength(1)
   })

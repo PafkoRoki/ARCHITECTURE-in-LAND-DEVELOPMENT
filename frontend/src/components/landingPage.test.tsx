@@ -53,14 +53,14 @@ const expectedParagraphs = [
 ] as const
 
 const expectedGalleryImages = [
-  'poznan.jpg',
-  'city.png',
-  'architects.jpg',
-  'house_architect.jpg',
-  'houses.png',
-  'render.png',
-  'house.jpg',
-  'visualization.jpg',
+  'gallery-01.webp',
+  'gallery-02.webp',
+  'gallery-03.webp',
+  'gallery-04.webp',
+  'gallery-05.webp',
+  'gallery-06.webp',
+  'gallery-07.webp',
+  'gallery-08.webp',
 ] as const
 
 const expectedBenefits = [

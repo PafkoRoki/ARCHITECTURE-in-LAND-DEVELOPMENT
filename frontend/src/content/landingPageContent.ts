@@ -1,23 +1,33 @@
 import architectsImage from '../assets/architects.jpg'
-import cityImage from '../assets/city.png'
-import houseImage from '../assets/house.jpg'
 import houseArchitectImage from '../assets/house_architect.jpg'
-import housesImage from '../assets/houses.png'
 import poznanImage from '../assets/poznan.jpg'
 import renderImage from '../assets/render.png'
 import visualizationImage from '../assets/visualization.jpg'
+import gallery01Image from '../assets/gallery-01.webp'
+import gallery02Image from '../assets/gallery-02.webp'
+import gallery03Image from '../assets/gallery-03.webp'
+import gallery04Image from '../assets/gallery-04.webp'
+import gallery05Image from '../assets/gallery-05.webp'
+import gallery06Image from '../assets/gallery-06.webp'
+import gallery07Image from '../assets/gallery-07.webp'
+import gallery08Image from '../assets/gallery-08.webp'
+import process01Image from '../assets/process-01.webp'
+import process02Image from '../assets/process-02.webp'
+import process03Image from '../assets/process-03.webp'
+import process04Image from '../assets/process-04.webp'
+import process05Image from '../assets/process-05.webp'
 
 export type GalleryImages = readonly string[]
 
 export const GALLERY_IMAGES = [
-  poznanImage,
-  cityImage,
-  architectsImage,
-  houseArchitectImage,
-  housesImage,
-  renderImage,
-  houseImage,
-  visualizationImage,
+  gallery01Image,
+  gallery02Image,
+  gallery03Image,
+  gallery04Image,
+  gallery05Image,
+  gallery06Image,
+  gallery07Image,
+  gallery08Image,
 ] as const satisfies GalleryImages
 
 export type ArchitectureArticleContent = Readonly<{
@@ -158,6 +168,7 @@ export type ProcessStep = Readonly<{
   title: string
   description: string
   image: string
+  imagePresentation: 'diagram' | 'photo'
 }>
 
 export type ProcessContent = Readonly<{
@@ -179,35 +190,40 @@ export const PROCESS_CONTENT = {
       title: 'Poznanie potrzeb',
       description:
         'Zaczynamy od rozmowy, analizy działki lub inwestycji oraz ustalenia budżetu, priorytetów i oczekiwań.',
-      image: housesImage,
+      image: process01Image,
+      imagePresentation: 'diagram',
     },
     {
       number: '02',
       title: 'Koncepcja',
       description:
         'Tworzymy pierwsze szkice i układ funkcjonalny, ustalając skalę, kierunek i najważniejsze założenia projektu.',
-      image: cityImage,
+      image: process02Image,
+      imagePresentation: 'diagram',
     },
     {
       number: '03',
       title: 'Dopracowanie koncepcji',
       description:
         'Rozwijamy wybrany wariant w modelu 3D, dopracowujemy bryłę, układ i materiały oraz przygotowujemy wizualizacje.',
-      image: visualizationImage,
+      image: process03Image,
+      imagePresentation: 'diagram',
     },
     {
       number: '04',
       title: 'Projekt architektoniczno-budowlany',
       description:
         'Przekładamy koncepcję na kompletne rozwiązania projektowe, przygotowujemy dokumentację i koordynujemy uzgodnienia branżowe.',
-      image: houseImage,
+      image: process04Image,
+      imagePresentation: 'diagram',
     },
     {
       number: '05',
       title: 'Dokumentacja i nadzór',
       description:
         'Przygotowujemy materiały do pozwolenia na budowę i wspieramy proces realizacji na etapie budowy.',
-      image: architectsImage,
+      image: process05Image,
+      imagePresentation: 'photo',
     },
   ],
 } as const satisfies ProcessContent

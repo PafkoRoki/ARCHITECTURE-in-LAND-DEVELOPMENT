@@ -117,18 +117,34 @@
   width: 100%;
   aspect-ratio: 2 / 1;
   overflow: hidden;
+}
+
+.our-process__image-frame--diagram {
+  background-color: transparent;
+}
+
+.our-process__image-frame--photo {
   background-color: #e8e8e8;
   border-radius: var(--card-radius);
   corner-shape: squircle;
+  outline: 1px solid oklch(0 0 0 / 0.1);
+  outline-offset: -1px;
 }
 
 .our-process__image {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
   pointer-events: none;
   user-select: none;
+}
+
+.our-process__image--diagram {
+  object-fit: contain;
+}
+
+.our-process__image--photo {
+  object-fit: cover;
 }
 
 .timeline__rail {
