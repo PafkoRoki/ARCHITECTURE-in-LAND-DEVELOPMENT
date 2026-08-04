@@ -239,21 +239,18 @@ export type FooterBusinessDetail = Readonly<{
 }>
 
 export type FooterContent = Readonly<{
+  eyebrow: string
   heading: string
+  supportingText: string
   identity: string
-  businessDetails: readonly [
-    FooterBusinessDetail,
-    FooterBusinessDetail,
-    FooterBusinessDetail,
-  ]
+  businessDetails: readonly FooterBusinessDetail[]
 }>
 
 export const FOOTER_CONTENT = {
-  heading: 'From land to lasting places.',
+  eyebrow: 'ARCHITEKTURA / TEREN / SPOŁECZNOŚĆ',
+  heading: 'Od terenu do miejsc na lata.',
+  supportingText:
+    'Tworzymy ramy dla budynków, krajobrazu i społeczności, które mogą rozwijać się razem.',
   identity: 'Architecture in Land Development',
-  businessDetails: [
-    { label: 'NIP', value: '—' },
-    { label: 'Address', value: '—' },
-    { label: 'Contact', value: '—' },
-  ],
+  businessDetails: [] as readonly FooterBusinessDetail[],
 } as const satisfies FooterContent

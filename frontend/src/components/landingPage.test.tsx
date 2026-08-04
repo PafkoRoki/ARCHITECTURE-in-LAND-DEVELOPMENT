@@ -107,13 +107,12 @@ describe('landing page content', () => {
       WHY_WORK_WITH_US_BENEFITS.map(({ number, title }) => [number, title]),
     ).toEqual(expectedBenefits)
     expect(FOOTER_CONTENT).toEqual({
-      heading: 'From land to lasting places.',
+      eyebrow: 'ARCHITEKTURA / TEREN / SPOŁECZNOŚĆ',
+      heading: 'Od terenu do miejsc na lata.',
+      supportingText:
+        'Tworzymy ramy dla budynków, krajobrazu i społeczności, które mogą rozwijać się razem.',
       identity: 'Architecture in Land Development',
-      businessDetails: [
-        { label: 'NIP', value: '—' },
-        { label: 'Address', value: '—' },
-        { label: 'Contact', value: '—' },
-      ],
+      businessDetails: [],
     })
   })
 
@@ -223,22 +222,28 @@ describe('WhyWorkWithUs', () => {
 
 describe('Footer', () => {
   it('renders the exact presentational footer content without controls', () => {
-    render(<Footer />)
+    const { container } = render(<Footer />)
 
-    expect(screen.getByRole('contentinfo')).toBeInTheDocument()
-    expect(
-      screen.getByRole('heading', {
-        level: 2,
-        name: FOOTER_CONTENT.heading,
-      }),
-    ).toBeInTheDocument()
-    expect(screen.getByText(FOOTER_CONTENT.identity)).toBeInTheDocument()
-    FOOTER_CONTENT.businessDetails.forEach(({ label }) => {
-      expect(screen.getByText(label)).toBeInTheDocument()
+    const footer = screen.getByRole('contentinfo')
+    const heading = screen.getByRole('heading', {
+      level: 2,
+      name: FOOTER_CONTENT.heading,
     })
-    expect(screen.getAllByText('—')).toHaveLength(3)
+
+    expect(footer).toHaveAttribute('aria-labelledby', heading.id)
+    expect(screen.getByText(FOOTER_CONTENT.identity)).toBeInTheDocument()
+    expect(screen.getByText(FOOTER_CONTENT.eyebrow)).toBeInTheDocument()
+    expect(screen.getByText(FOOTER_CONTENT.supportingText)).toBeInTheDocument()
+    expect(container.querySelector('.site-footer__marker')).toHaveAttribute(
+      'aria-hidden',
+      'true',
+    )
+    expect(container.querySelector('.site-footer__business-details')).toBeNull()
+    expect(screen.queryByText('—')).not.toBeInTheDocument()
     expect(
-      screen.getByText(`© ${new Date().getFullYear()}`),
+      screen.getByText(
+        `© ${new Date().getFullYear()} ${FOOTER_CONTENT.identity}`,
+      ),
     ).toBeInTheDocument()
     expect(screen.queryByRole('link')).not.toBeInTheDocument()
     expect(screen.queryByRole('button')).not.toBeInTheDocument()
