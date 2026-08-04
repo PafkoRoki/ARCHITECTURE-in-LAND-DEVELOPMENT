@@ -16,6 +16,9 @@ import process02Image from '../assets/process-02.webp'
 import process03Image from '../assets/process-03.webp'
 import process04Image from '../assets/process-04.webp'
 import process05Image from '../assets/process-05.webp'
+import review1 from '../assets/review1.jpg'
+import review2 from '../assets/review2.jpg'
+import review3 from '../assets/review3.jpg'
 
 export type GalleryImages = readonly string[]
 
@@ -138,24 +141,24 @@ export const CONTACT_CONTENT = {
 export const CONTACT_TESTIMONIALS = [
   {
     quote:
-      'The team turned a complex site into a clear visual story that made early decisions easier for everyone involved.',
-    name: 'Property developer',
-    designation: 'Illustrative testimonial',
-    src: poznanImage,
+      'They delivered on our visions!',
+    name: 'Karsten Key',
+    designation: 'client',
+    src: review1,
   },
   {
     quote:
-      'The process was clear from the first brief, and the final images captured both the architecture and the atmosphere.',
-    name: 'Architecture studio',
-    designation: 'Illustrative testimonial',
-    src: architectsImage,
+      'Gustowne i profesjonalne wykonanie projektu. Polecam',
+    name: 'Rudolf',
+    designation: 'Client',
+    src: review2,
   },
   {
     quote:
-      'Their architectural perspective brought precision, credibility, and a strong sense of place to every visualization.',
-    name: 'Design team',
-    designation: 'Illustrative testimonial',
-    src: visualizationImage,
+      'Oby więcej takich firm z takim podejściem. Polecamy.',
+    name: 'Arkadiusz Czuba-Kosior',
+    designation: 'client',
+    src: review3,
   },
 ] as const satisfies readonly [
   ContactTestimonial,

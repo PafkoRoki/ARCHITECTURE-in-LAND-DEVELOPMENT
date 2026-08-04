@@ -22,7 +22,7 @@
 .hero__title {
   align-self: end;
   margin: 0;
-  color: #000000;
+  color: #ff8709;
   font-size: var(--type-display-size);
   font-weight: 600;
   line-height: var(--type-display-leading);
