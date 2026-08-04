@@ -1,4 +1,4 @@
-# Architecture in Land Development
+# Architecture in Land Development 
 
 React and TypeScript landing page with GSAP-powered scrolling and section
 transitions. Vite builds the browser application, and a Cloudflare Pages worker
