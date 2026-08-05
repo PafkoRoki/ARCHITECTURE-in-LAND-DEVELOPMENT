@@ -4,7 +4,7 @@ export function Hero() {
   return (
     <section className="hero" aria-labelledby="hero-title">
       <div className="hero__meta">
-        <p>Poznań, 2026</p>
+        <p></p>
       </div>
 
       <h1
