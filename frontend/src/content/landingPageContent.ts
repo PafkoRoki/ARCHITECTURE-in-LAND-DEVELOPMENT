@@ -75,28 +75,28 @@ export const WHY_WORK_WITH_US_CONTENT = [
   'Why work with\u00A0us?',
   [
     {
-      number: 'A 01',
+      number: '01',
       title: 'Endless creative potential for\u00A0bold ideas',
       description:
         'Your vision sets the scale – we match it. Whether shaping skyline, launching a product line, or building a brand, our 3D visualization services scale with\u00A0your ambition.',
       image: poznanImage,
     },
     {
-      number: 'B 02',
+      number: '02',
       title: 'Fast delivery. Clear process. No surprises',
       description:
         'Our efficient workflows and clear communication ensure fast delivery with no unexpected delays. You stay informed about progress, next steps, and delivery times.',
       image: houseArchitectImage,
     },
     {
-      number: 'C 03',
+      number: '03',
       title: 'Global vision. Local insight',
       description:
         'With clients worldwide, we bring a global perspective while respecting local nuance. From regional architecture to\u00A0international design trends, we craft visuals that speak to\u00A0your market and stand out globally.',
       image: renderImage,
     },
     {
-      number: 'D 04',
+      number: '04',
       title: 'Architectural expertise at\u00A0our foundation',
       description:
         'With architects and\u00A0designers on our team, we understand structure and essence, bringing your vision to\u00A0life with authenticity and\u00A0depth.',
@@ -140,23 +140,23 @@ export const CONTACT_CONTENT = {
 export const CONTACT_TESTIMONIALS = [
   {
     quote:
-      'They delivered on our visions!',
-    name: 'Karsten Key',
-    designation: 'client',
+      'The team turned a complex site into a clear visual story that made early decisions easier for everyone involved.',
+    name: 'Property developer',
+    designation: 'Illustrative testimonial',
     src: review1,
   },
   {
     quote:
-      'Gustowne i profesjonalne wykonanie projektu. Polecam',
-    name: 'Rudolf',
-    designation: 'Client',
+      'The process was clear from the first brief, and the final images captured both the architecture and the atmosphere.',
+    name: 'Architecture studio',
+    designation: 'Illustrative testimonial',
     src: review2,
   },
   {
     quote:
-      'Oby więcej takich firm z takim podejściem. Polecamy.',
-    name: 'Arkadiusz Czuba-Kosior',
-    designation: 'client',
+      'Their architectural perspective brought precision, credibility, and a strong sense of place to every visualization.',
+    name: 'Design team',
+    designation: 'Illustrative testimonial',
     src: review3,
   },
 ] as const satisfies readonly [
