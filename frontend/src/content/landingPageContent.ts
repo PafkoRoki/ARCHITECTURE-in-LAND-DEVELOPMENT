@@ -75,28 +75,28 @@ export const WHY_WORK_WITH_US_CONTENT = [
   'Why work with\u00A0us?',
   [
     {
-      number: '01',
+      number: 'A 01',
       title: 'Endless creative potential for\u00A0bold ideas',
       description:
         'Your vision sets the scale – we match it. Whether shaping skyline, launching a product line, or building a brand, our 3D visualization services scale with\u00A0your ambition.',
       image: poznanImage,
     },
     {
-      number: '02',
+      number: 'B 02',
       title: 'Fast delivery. Clear process. No surprises',
       description:
         'Our efficient workflows and clear communication ensure fast delivery with no unexpected delays. You stay informed about progress, next steps, and delivery times.',
       image: houseArchitectImage,
     },
     {
-      number: '03',
+      number: 'C 03',
       title: 'Global vision. Local insight',
       description:
         'With clients worldwide, we bring a global perspective while respecting local nuance. From regional architecture to\u00A0international design trends, we craft visuals that speak to\u00A0your market and stand out globally.',
       image: renderImage,
     },
     {
-      number: '04',
+      number: 'D 04',
       title: 'Architectural expertise at\u00A0our foundation',
       description:
         'With architects and\u00A0designers on our team, we understand structure and essence, bringing your vision to\u00A0life with authenticity and\u00A0depth.',
