@@ -3,11 +3,6 @@ import ScrubbedBentoGallery from './components/ScrubbedBentoGallery'
 import StaggeredMenu from './components/StaggeredMenu'
 import { useSmoothScroll } from './hooks/useSmoothScroll'
 
-function App() {
-  const { wrapperRef, contentRef, isScrollReady, prefersReducedMotion } =
-    useSmoothScroll()
-
-
 const menuItems = [
   { label: 'Home', ariaLabel: 'Go to home page', link: '/' },
   { label: 'About', ariaLabel: 'Learn about us', link: '/about' },
@@ -20,6 +15,11 @@ const socialItems = [
   { label: 'GitHub', link: 'https://github.com' },
   { label: 'LinkedIn', link: 'https://linkedin.com' }
 ];
+
+
+function App() {
+  const { wrapperRef, contentRef, isScrollReady, prefersReducedMotion } =
+    useSmoothScroll()
 
   return (
     <>
