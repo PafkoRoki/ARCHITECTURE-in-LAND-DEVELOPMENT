@@ -91,7 +91,6 @@ describe('landing page content', () => {
         name: 'Architecture in Land Development',
       }),
     ).toBeInTheDocument()
-    expect(hero).toHaveTextContent('Poznań, 2026')
     expect(hero).not.toHaveTextContent('PL — 2026')
     expect(hero).not.toBeNull()
     expect(hero?.nextElementSibling).toBe(gallery)
