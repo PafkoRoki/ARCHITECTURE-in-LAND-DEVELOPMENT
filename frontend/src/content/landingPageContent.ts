@@ -140,23 +140,23 @@ export const CONTACT_CONTENT = {
 export const CONTACT_TESTIMONIALS = [
   {
     quote:
-      'The team turned a complex site into a clear visual story that made early decisions easier for everyone involved.',
-    name: 'Property developer',
-    designation: 'Illustrative testimonial',
+      'They delivered on our visions!',
+    name: 'Karsten Key',
+    designation: 'Client',
     src: review1,
   },
   {
     quote:
-      'The process was clear from the first brief, and the final images captured both the architecture and the atmosphere.',
-    name: 'Architecture studio',
-    designation: 'Illustrative testimonial',
+      'Oby więcej takich firm z takim podejściem. Polecamy',
+    name: 'Arkadiusz Czuba-Kosior',
+    designation: 'Client',
     src: review2,
   },
   {
     quote:
-      'Their architectural perspective brought precision, credibility, and a strong sense of place to every visualization.',
-    name: 'Design team',
-    designation: 'Illustrative testimonial',
+      'Gustowne i profesjonalne wykonanie projektu. Polecam',
+    name: 'Rudolf',
+    designation: 'Client',
     src: review3,
   },
 ] as const satisfies readonly [

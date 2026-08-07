@@ -40,24 +40,22 @@ vi.mock('./AnimatedTestimonials', async () => {
 
 const EXPECTED_TESTIMONIALS = [
   {
-    name: 'Property developer',
-    designation: 'Illustrative testimonial',
-    quote:
-      'The team turned a complex site into a clear visual story that made early decisions easier for everyone involved.',
+    name: 'Karsten Key',
+    designation: 'Client',
+    quote: 'They delivered on our visions!',
   },
   {
-    name: 'Architecture studio',
-    designation: 'Illustrative testimonial',
-    quote:
-      'The process was clear from the first brief, and the final images captured both the architecture and the atmosphere.',
+    name: 'Arkadiusz Czuba-Kosior',
+    designation: 'Client',
+    quote: 'Oby więcej takich firm z takim podejściem. Polecamy',
   },
   {
-    name: 'Design team',
-    designation: 'Illustrative testimonial',
-    quote:
-      'Their architectural perspective brought precision, credibility, and a strong sense of place to every visualization.',
+    name: 'Rudolf',
+    designation: 'Client',
+    quote: 'Gustowne i profesjonalne wykonanie projektu. Polecam',
   },
-] as const
+] as const;
+
 
 afterEach(() => {
   vi.unstubAllGlobals()

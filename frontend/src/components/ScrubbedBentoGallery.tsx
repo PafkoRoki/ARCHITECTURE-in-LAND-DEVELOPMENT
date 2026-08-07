@@ -22,13 +22,27 @@ function ScrubbedBentoGallery({ isScrollReady }: ScrollReadyProps) {
   return (
     <>
       <main>
-        <Hero />
+        <section id="home">
+          <Hero />
+        </section>
+
         <BentoGallery isScrollReady={isScrollReady} />
-        <ArchitectureArticle />
-        <WhyWorkWithUs isScrollReady={isScrollReady} />
+
+        <section id="about">
+          <ArchitectureArticle />
+        </section>
+
+        <section id="services">
+          <WhyWorkWithUs isScrollReady={isScrollReady} />
+        </section>
+
         <OurProcess isScrollReady={isScrollReady} />
-        <ContactSection />
+
+        <section id="contact">
+          <ContactSection />
+        </section>
       </main>
+
       <Footer />
     </>
   )
