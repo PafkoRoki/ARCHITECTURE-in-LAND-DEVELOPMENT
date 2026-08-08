@@ -36,7 +36,7 @@ function App() {
             openMenuButtonColor="#ff8709"
             changeMenuColorOnOpen={true}
             colors={["#f0f0f0", "#f0f0f0", "#ff8709"]}
-            logoUrl="/src/assets/logo.svg"
+            logoUrl={logoUrl}
             accentColor="#ff8709"
           />
         </div>

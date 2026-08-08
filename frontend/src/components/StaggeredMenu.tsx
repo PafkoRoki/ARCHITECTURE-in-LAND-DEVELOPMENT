@@ -508,7 +508,7 @@ const toggleMenu = useCallback(() => {
           )}
         </div>
       </aside>
-    </div>
+    </nav>
   );
 };
 

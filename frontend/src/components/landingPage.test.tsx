@@ -12,9 +12,7 @@ import {
 
 import { ArchitectureArticle } from './ArchitectureArticle'
 import { BentoGallery } from './BentoGallery'
-import { ContactSection } from './ContactSection'
 import { Footer } from './Footer'
-import { OurProcess } from './OurProcess'
 import { WhyWorkWithUs } from './WhyWorkWithUs'
 
 const whyAnimation = vi.hoisted(() => ({
