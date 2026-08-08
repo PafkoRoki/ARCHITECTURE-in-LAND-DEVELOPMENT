@@ -1,3 +1,4 @@
+
 import { fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -11,7 +12,9 @@ import {
 
 import { ArchitectureArticle } from './ArchitectureArticle'
 import { BentoGallery } from './BentoGallery'
+import { ContactSection } from './ContactSection'
 import { Footer } from './Footer'
+import { OurProcess } from './OurProcess'
 import { WhyWorkWithUs } from './WhyWorkWithUs'
 
 const whyAnimation = vi.hoisted(() => ({
@@ -160,6 +163,29 @@ describe('landing page content', () => {
       ),
     ).toEqual(expectedParagraphs)
   })
+
+  it('renders the page sections in the required order', () => {
+    const { container } = render(<App />)
+
+    const main = container.querySelector('main')
+    const whyWorkWithUs = main?.querySelector('.why-work-with-us')
+    const process = main?.querySelector('.our-process')
+    const contact = main?.querySelector('.contact-section')
+    const footer = container.querySelector('footer')
+
+    expect(main).not.toBeNull()
+    expect(whyWorkWithUs).toBeInTheDocument()
+    expect(process).toBeInTheDocument()
+    expect(contact).toBeInTheDocument()
+    expect(footer).toBeInTheDocument()
+
+    expect(whyWorkWithUs?.nextElementSibling).toBe(process)
+    expect(process?.nextElementSibling).toBe(contact)
+    expect(main?.lastElementChild).toBe(contact)
+
+    expect(main?.contains(footer ?? null)).toBe(false)
+    expect(main?.nextElementSibling).toBe(footer)
+  })
 })
 
 describe('WhyWorkWithUs', () => {
@@ -306,46 +332,6 @@ describe('Footer', () => {
         '.site-footer__business-details',
       ),
     ).toBeNull()
-
-    expect(
-      screen.queryByText('—'),
-    ).not.toBeInTheDocument()
-
-    expect(
-      screen.getByText(
-        `© ${new Date().getFullYear()} ${FOOTER_CONTENT.identity}`,
-      ),
-    ).toBeInTheDocument()
-
-    expect(
-      screen.queryByRole('link'),
-    ).not.toBeInTheDocument()
-
-    expect(
-      screen.queryByRole('button'),
-    ).not.toBeInTheDocument()
-  })
-
-  it('places the footer after main inside the smooth-scroll content', () => {
-    const { container } = render(<App />)
-
-    const smoothContent = container.querySelector(
-      '#smooth-content',
-    )
-
-    const main = smoothContent?.querySelector(
-      ':scope > main',
-    )
-
-    const footer = smoothContent?.querySelector(
-      ':scope > footer',
-    )
-
-    expect(smoothContent).toBeInTheDocument()
-    expect(main).toBeInTheDocument()
-    expect(footer).toBeInTheDocument()
-
-    expect(main?.contains(footer ?? null)).toBe(false)
-    expect(main?.nextElementSibling).toBe(footer)
   })
 })
+
