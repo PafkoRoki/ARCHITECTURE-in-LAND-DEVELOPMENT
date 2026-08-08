@@ -1,8 +1,12 @@
 import { TypingHeading } from './TypingHeading'
 
-export function Hero() {
+type HeroProps = Readonly<{
+  id?: string
+}>
+
+export function Hero({ id }: HeroProps) {
   return (
-    <section className="hero" aria-labelledby="hero-title">
+    <section id={id} className="hero" aria-labelledby="hero-title">
       <div className="hero__meta">
       </div>
 

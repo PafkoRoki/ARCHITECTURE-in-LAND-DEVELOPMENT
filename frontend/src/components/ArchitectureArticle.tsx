@@ -1,9 +1,13 @@
 import { ARCHITECTURE_ARTICLE_CONTENT } from '../content/landingPageContent'
 import { TypingHeading } from './TypingHeading'
 
-export function ArchitectureArticle() {
+type ArchitectureArticleProps = Readonly<{
+  id?: string
+}>
+
+export function ArchitectureArticle({ id }: ArchitectureArticleProps) {
   return (
-    <article className="gallery-copy">
+    <article id={id} className="gallery-copy">
       <h2 aria-label={ARCHITECTURE_ARTICLE_CONTENT.heading}>
         <TypingHeading text={ARCHITECTURE_ARTICLE_CONTENT.heading} />
       </h2>

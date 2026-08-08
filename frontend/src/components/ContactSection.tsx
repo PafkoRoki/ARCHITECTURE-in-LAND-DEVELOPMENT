@@ -1,4 +1,4 @@
-import { useId, useState } from 'react'
+import { useId } from 'react'
 import type { FormEvent } from 'react'
 import {
   CONTACT_CONTENT,
@@ -6,8 +6,11 @@ import {
 } from '../content/landingPageContent'
 import { AnimatedTestimonials } from './AnimatedTestimonials'
 
-export function ContactSection() {
-  const [isSubmitted, setIsSubmitted] = useState(false)
+type ContactSectionProps = Readonly<{
+  id?: string
+}>
+
+export function ContactSection({ id }: ContactSectionProps) {
   const idPrefix = useId()
   const headingId = `${idPrefix}-heading`
   const emailId = `${idPrefix}-email`
@@ -15,13 +18,11 @@ export function ContactSection() {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    setIsSubmitted(true)
   }
 
   return (
-    <section className="contact-section" aria-labelledby={headingId}>
+    <section id={id} className="contact-section" aria-labelledby={headingId}>
       <div className="contact-section__wrapper">
-        <div className="contact-section__form-panel">
           <header className="contact-section__header">
             <h2 id={headingId} className="contact-section__heading">
               {CONTACT_CONTENT.heading}
@@ -63,38 +64,24 @@ export function ContactSection() {
               />
             </div>
 
-            <button
-              className="contact-section__submit"
-              type="submit"
-              disabled={isSubmitted}
-            >
+            <button className="contact-section__submit" type="submit">
               {CONTACT_CONTENT.submitLabel}
             </button>
-            {isSubmitted ? (
-              <p
-                className="contact-section__success"
-                role="status"
-                aria-live="polite"
-              >
-                Thank you! Your inquiry has been received.
-              </p>
-            ) : null}
           </form>
-        </div>
 
-        <div
-          className="contact-section__testimonials-panel"
-          aria-label={CONTACT_CONTENT.sampleLabel}
-        >
-          <p className="contact-section__sample-label">
-            {CONTACT_CONTENT.sampleLabel}
-          </p>
-          <AnimatedTestimonials
-            testimonials={CONTACT_TESTIMONIALS}
-            autoplay={false}
-          />
+          <div
+            className="contact-section__testimonials-panel"
+            aria-label={CONTACT_CONTENT.sampleLabel}
+          >
+            <p className="contact-section__sample-label">
+              {CONTACT_CONTENT.sampleLabel}
+            </p>
+            <AnimatedTestimonials
+              testimonials={CONTACT_TESTIMONIALS}
+              autoplay={false}
+            />
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
   )
 }

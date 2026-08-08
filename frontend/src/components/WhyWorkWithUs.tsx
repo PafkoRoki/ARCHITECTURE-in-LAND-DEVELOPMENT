@@ -7,10 +7,6 @@ import type { WhyWorkWithUsBenefit } from '../content/landingPageContent'
 import { useWhyWorkWithUsAnimation } from '../hooks/useWhyWorkWithUsAnimation'
 import { TypingHeading } from './TypingHeading'
 
-type WhyWorkWithUsProps = Readonly<{
-  isScrollReady: boolean
-}>
-
 type BenefitItemProps = Readonly<{
   activeIndex: number
   benefit: WhyWorkWithUsBenefit
@@ -106,7 +102,12 @@ function BenefitItem({
   )
 }
 
-export function WhyWorkWithUs({ isScrollReady }: WhyWorkWithUsProps) {
+type WhyWorkWithUsProps = Readonly<{
+  id?: string
+  isScrollReady: boolean
+}>
+
+export function WhyWorkWithUs({ id, isScrollReady }: WhyWorkWithUsProps) {
   const sectionRef = useRef<HTMLElement>(null)
   const idPrefix = useId()
   const { activeIndex, isAnimated, scrollToBenefit } =
@@ -115,6 +116,7 @@ export function WhyWorkWithUs({ isScrollReady }: WhyWorkWithUsProps) {
   return (
     <section
       ref={sectionRef}
+      id={id}
       className={`why-work-with-us${
         isAnimated ? ' why-work-with-us--animated' : ''
       }`}
