@@ -91,9 +91,9 @@ describe('landing page content', () => {
         name: 'Architecture in Land Development',
       }),
     ).toBeInTheDocument()
-    expect(hero).not.toHaveTextContent('PL — 2026')
-    expect(hero).not.toBeNull()
-    expect(hero?.nextElementSibling).toBe(gallery)
+      expect(hero).toBeInTheDocument()
+      expect(hero).not.toHaveTextContent('PL — 2026')
+      expect(hero?.nextElementSibling).toBe(gallery)
   })
 
   it('keeps the gallery, article, benefit, and footer content exact', () => {
