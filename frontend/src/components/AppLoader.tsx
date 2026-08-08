@@ -36,9 +36,22 @@ function AppLoaderAnimation({ onComplete }: AppLoaderAnimationProps) {
     const allPoints: number[][] = []
     const isOpened = false
     const appRoot = overlay.parentElement
+    const hasInertSupport = 'inert' in document.createElement('div')
     const wasInert = appRoot?.hasAttribute('inert') ?? false
+    const hiddenSiblings: Element[] = []
 
-    appRoot?.setAttribute('inert', '')
+    if (appRoot) {
+      if (hasInertSupport) {
+        appRoot.setAttribute('inert', '')
+      } else {
+        for (const child of Array.from(appRoot.children)) {
+          if (child !== overlay) {
+            hiddenSiblings.push(child)
+            child.setAttribute('aria-hidden', 'true')
+          }
+        }
+      }
+    }
 
     for (let i = 0; i < numPaths; i++) {
       const points: number[] = []
@@ -104,7 +117,13 @@ function AppLoaderAnimation({ onComplete }: AppLoaderAnimationProps) {
 
     return () => {
       context.revert()
-      if (appRoot && !wasInert) appRoot.removeAttribute('inert')
+      if (appRoot) {
+        if (hasInertSupport) {
+          if (!wasInert) appRoot.removeAttribute('inert')
+        } else {
+          hiddenSiblings.forEach((node) => node.removeAttribute('aria-hidden'))
+        }
+      }
     }
   }, [onComplete])
 

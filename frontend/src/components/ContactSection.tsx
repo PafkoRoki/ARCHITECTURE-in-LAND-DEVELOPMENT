@@ -1,4 +1,4 @@
-import { useId } from 'react'
+import { useId, useState } from 'react'
 import type { FormEvent } from 'react'
 import {
   CONTACT_CONTENT,
@@ -7,6 +7,7 @@ import {
 import { AnimatedTestimonials } from './AnimatedTestimonials'
 
 export function ContactSection() {
+  const [isSubmitted, setIsSubmitted] = useState(false)
   const idPrefix = useId()
   const headingId = `${idPrefix}-heading`
   const emailId = `${idPrefix}-email`
@@ -14,6 +15,7 @@ export function ContactSection() {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    setIsSubmitted(true)
   }
 
   return (
@@ -61,9 +63,22 @@ export function ContactSection() {
               />
             </div>
 
-            <button className="contact-section__submit" type="submit">
+            <button
+              className="contact-section__submit"
+              type="submit"
+              disabled={isSubmitted}
+            >
               {CONTACT_CONTENT.submitLabel}
             </button>
+            {isSubmitted ? (
+              <p
+                className="contact-section__success"
+                role="status"
+                aria-live="polite"
+              >
+                Thank you! Your inquiry has been received.
+              </p>
+            ) : null}
           </form>
         </div>
 

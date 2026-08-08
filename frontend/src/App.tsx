@@ -4,18 +4,19 @@ import StaggeredMenu from './components/StaggeredMenu'
 import { useSmoothScroll } from './hooks/useSmoothScroll'
 
 const menuItems = [
-  { label: 'Home', ariaLabel: 'Go to home page', link: '/' },
-  { label: 'About', ariaLabel: 'Learn about us', link: '/about' },
-  { label: 'Services', ariaLabel: 'View our services', link: '/services' },
-  { label: 'Contact', ariaLabel: 'Get in touch', link: '/#contact-section' }
-];
+  { label: 'Home', ariaLabel: 'Go to home section', link: '#home' },
+  { label: 'About', ariaLabel: 'Go to about section', link: '#about' },
+  { label: 'Services', ariaLabel: 'Go to services section', link: '#services' },
+  { label: 'Contact', ariaLabel: 'Go to contact section', link: '#contact' }
+]
 
 const socialItems = [
   { label: 'Twitter', link: 'https://twitter.com' },
   { label: 'GitHub', link: 'https://github.com' },
   { label: 'LinkedIn', link: 'https://linkedin.com' }
-];
+]
 
+const logoUrl = new URL('./assets/logo.svg', import.meta.url).href
 
 function App() {
   const { wrapperRef, contentRef, isScrollReady, prefersReducedMotion } =
@@ -35,10 +36,8 @@ function App() {
             openMenuButtonColor="#ff8709"
             changeMenuColorOnOpen={true}
             colors={["#f0f0f0", "#f0f0f0", "#ff8709"]}
-            logoUrl="https://raw.githubusercontent.com/PafkoRoki/PAAS/main/public/Assets/logo.svg"
+            logoUrl="/src/assets/logo.svg"
             accentColor="#ff8709"
-            onMenuOpen={() => console.log('Menu opened')}
-            onMenuClose={() => console.log('Menu closed')}
           />
         </div>
       <div id="smooth-wrapper" ref={wrapperRef}>
