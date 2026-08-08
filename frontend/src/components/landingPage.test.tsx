@@ -129,7 +129,9 @@ describe('landing page content', () => {
   })
 
   it('renders the ordered decorative gallery and exact article copy', () => {
-    const { container: gallery } = render(<BentoGallery />)
+    const { container: gallery } = render(
+      <BentoGallery isScrollReady={false} />,
+    )
 
     const galleryWrapper = gallery.querySelector('.gallery-wrap')
     const galleryImages = Array.from(gallery.querySelectorAll('img'))
@@ -188,7 +190,9 @@ describe('landing page content', () => {
 
 describe('WhyWorkWithUs', () => {
   it('renders a fully expanded, noninteractive fallback with decorative images', () => {
-    const { container } = render(<WhyWorkWithUs />)
+    const { container } = render(
+      <WhyWorkWithUs isScrollReady={false} />,
+    )
 
     expect(screen.queryByRole('button')).not.toBeInTheDocument()
 
